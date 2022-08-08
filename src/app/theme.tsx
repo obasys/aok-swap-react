@@ -1,4 +1,4 @@
-import {createTheme} from '@mui/material';
+import { createTheme } from '@mui/material';
 
 declare module '@mui/material/Button' {
     interface ButtonPropsVariantOverrides {
@@ -16,30 +16,29 @@ declare module '@mui/material/Typography' {
 }
 
 declare module '@mui/material/styles' {
-    interface Theme {
-    }
+    interface Theme {}
 
-    interface ThemeOptions {
-    }
+    interface ThemeOptions {}
 
-    interface TypographyVariants {
-    }
+    interface TypographyVariants {}
 
-    interface TypographyVariantsOptions {
-    }
+    interface TypographyVariantsOptions {}
 }
 
 const theme = createTheme({
     palette: {
         primary: {
-            main: '#00665E',
-            dark: '#003B34',
+            main: '#6C82CF',
+            dark: '#485892',
             light: '#42948B',
             contrastText: '#BDD7D5',
         },
     },
     shape: {
-        borderRadius: 8,
+        borderRadius: 0,
+    },
+    typography: {
+        fontFamily: "'Lato', sans-serif",
     },
 });
 
