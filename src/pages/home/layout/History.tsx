@@ -1,24 +1,14 @@
 import React, { FC } from 'react';
-import {
-    Typography,
-    Grid,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    SelectChangeEvent,
-    Select,
-    Pagination,
-    Box,
-} from '@mui/material';
+import { FormControl, Grid, MenuItem, Pagination, Select, SelectChangeEvent, Typography } from '@mui/material';
 import styled from 'styled-components';
 import HistoryItem from '../components/HistoryItem';
 
-type HistoryItem = {
+type HistoryItemType = {
     hash: string;
     date: number;
     coin: string;
     amount: number;
-    type: 'sent' | 'recieved';
+    type: 'sent' | 'received';
 };
 
 interface Props {
@@ -26,8 +16,8 @@ interface Props {
 }
 
 const History: FC<Props> = ({ className }) => {
-    const history: HistoryItem = {
-        type: 'recieved',
+    const history: HistoryItemType = {
+        type: 'received',
         hash: '2hh23h23h2h342j32jh3j23h2h3j2h3h2h34j2hj34h2j3h2',
         coin: 'Sugarchain',
         amount: 21424234234234,

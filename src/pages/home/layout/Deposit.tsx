@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import {
-    Box,
     FormControl,
     Grid,
     IconButton,
@@ -26,14 +25,12 @@ interface Props {
 
 const Deposit: FC<Props> = ({ className }) => {
     const [cryptocurrency, setСryptocurrency] = React.useState('');
+    const inputValue = 'f23hg2h3jh2j3gj2g32k3h2h3k2jh32';
+    const theme = useTheme();
 
     const handleChange = (event: SelectChangeEvent) => {
         setСryptocurrency(event.target.value);
     };
-
-    const inputValue = 'f23hg2h3jh2j3gj2g32k3h2h3k2jh32';
-
-    const theme = useTheme();
 
     return (
         <div className={className}>
@@ -60,7 +57,7 @@ const Deposit: FC<Props> = ({ className }) => {
                                 columnSpacing={2}
                             >
                                 <Grid item md="auto">
-                                    <img src={Logo} width={52} height={46.15} />
+                                    <img src={Logo} width={52} height={46.15} alt="logo" />
                                 </Grid>
                                 <Grid item md="auto">
                                     <Typography>Sugarchain</Typography>
@@ -74,13 +71,13 @@ const Deposit: FC<Props> = ({ className }) => {
                         <MenuItem value={30}>Tether</MenuItem>
                     </Select>
                 </FormControl>
-                <Box className={'qr-code'}>
+                <div className="qr-code">
                     <QRCode
-                        value={'https://twitter.com/tarnovski_john/status/1544399487765979138'}
+                        value="https://twitter.com/tarnovski_john/status/1544399487765979138"
                         fgColor={theme.palette.primary.dark}
                         size={200}
                     />
-                </Box>
+                </div>
                 <TextField
                     value={inputValue}
                     disabled
@@ -103,10 +100,10 @@ const Deposit: FC<Props> = ({ className }) => {
                     </Grid>
                     <Grid item xs md>
                         <Typography component="span" variant="body1" color="black">
-                            The balance will be updated automaticaly when we receive coins on deposit address
+                            The balance will be updated automatically when we receive coins on deposit address
                         </Typography>
                     </Grid>
-                    <Grid md={2} />
+                    <Grid item md={2} />
                 </Grid>
             </Stack>
         </div>

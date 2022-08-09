@@ -1,4 +1,4 @@
-import Deposit from "./Deposit";
-import History from "./History";
+import Deposit from './Deposit';
+import History from './History';
 
-export { Deposit, History }
+export { Deposit, History };

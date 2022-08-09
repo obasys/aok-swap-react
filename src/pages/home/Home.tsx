@@ -15,20 +15,14 @@ const Home: FC<Props> = ({ className }) => {
 
     useEffect(() => {
         const handleClick = () => {
-            enqueueSnackbar(
-                // <Typography>You just deposited 23,315.0000 SUGAR on your account</Typography>,
-                <Typography>
-                    You just deposited <Typography display="inline">23,315.0000 SUGAR</Typography> on your account
-                </Typography>,
-                {
-                    anchorOrigin: {
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    },
-                    content: (key, message) => <ReportSuccess id={key} message={message} />,
-                    persist: true,
+            enqueueSnackbar(<Typography>You just deposited 23,315.0000 SUGAR on your account</Typography>, {
+                anchorOrigin: {
+                    vertical: 'bottom',
+                    horizontal: 'left',
                 },
-            );
+                content: (key, message) => <ReportSuccess id={key} message={message} />,
+                persist: true,
+            });
         };
         handleClick();
     }, []);
@@ -36,7 +30,7 @@ const Home: FC<Props> = ({ className }) => {
     return (
         <div className={className}>
             <UserItem />
-            <Container className={'main-container'}>
+            <Container className="main-container">
                 <Grid container columnSpacing={6}>
                     <Grid item md={6}>
                         <Deposit />
@@ -52,7 +46,7 @@ const Home: FC<Props> = ({ className }) => {
 
 export default styled(Home)`
     .main-container {
-        padding-top: 16px;
-        margin-top: 40px;
+        padding-top: ${({ theme }) => theme.spacing(2)};
+        margin-top: ${({ theme }) => theme.spacing(5)};
     }
 `;

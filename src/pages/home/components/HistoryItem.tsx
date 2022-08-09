@@ -10,7 +10,7 @@ interface Props {
     date: number;
     coin: string;
     amount: number;
-    type: 'sent' | 'recieved';
+    type: 'sent' | 'received';
 }
 
 const HistoryItem: FC<Props> = ({ className, hash, coin, date, amount, type }) => {

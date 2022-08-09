@@ -1,33 +1,34 @@
-import { SnackbarContent } from 'notistack';
 import styled from 'styled-components';
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Grid } from '@mui/material';
 import { RiCheckboxCircleFill } from 'react-icons/ri';
+import { SnackbarKey, SnackbarMessage } from 'notistack';
 
 interface ReportSuccessProps {
-    id: string;
-    message: string;
+    id: SnackbarKey;
+    message: SnackbarMessage;
     className?: string;
 }
 
-const ReportSuccess = React.forwardRef<HTMLDivElement, ReportSuccessProps>((props, ref) => {
+const ReportSuccess = forwardRef<HTMLDivElement, ReportSuccessProps>((props, ref) => {
     const { id, message, className, ...other } = props;
     return (
-        <SnackbarContent ref={ref} role="alert" {...other} className={className}>
+        <div ref={ref} role="alert" {...other} className={className}>
             <Grid container className="card" direction="row" alignItems="center">
-                <Grid container item md="auto" xs="auto" alignItems="center" className="iconWraper">
+                <Grid item md="auto" xs="auto" alignItems="center" className="icon-wrapper">
                     <RiCheckboxCircleFill className="icon" />
                 </Grid>
                 <Grid item md xs>
                     {message}
                 </Grid>
             </Grid>
-        </SnackbarContent>
+        </div>
     );
 });
 
 export default styled(ReportSuccess)`
     width: 466px;
+
     .card {
         background-color: #6c82cf;
         padding: 18px;
@@ -39,7 +40,7 @@ export default styled(ReportSuccess)`
         width: 20px;
     }
 
-    .iconWraper {
+    .icon-wrapper {
         margin-right: 18px;
     }
 `;
