@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { FormControl, Grid, MenuItem, Pagination, Select, SelectChangeEvent, Typography } from '@mui/material';
+import { FormControl, Grid, List, MenuItem, Pagination, Select, SelectChangeEvent, Typography } from '@mui/material';
 import styled from 'styled-components';
-import HistoryItem from '../components/HistoryItem';
+import { HistoryItem } from '../components';
 
 type HistoryItemType = {
     hash: string;
@@ -24,10 +24,10 @@ const History: FC<Props> = ({ className }) => {
         date: 1656374400 * 1000,
     };
 
-    const [age, setAge] = React.useState('');
+    const [filter, setFilter] = React.useState('');
 
     const handleChange = (event: SelectChangeEvent) => {
-        setAge(event.target.value as string);
+        setFilter(event.target.value as string);
     };
 
     return (
@@ -41,7 +41,7 @@ const History: FC<Props> = ({ className }) => {
                 <Grid item md="auto">
                     <FormControl size="small">
                         <Select
-                            value={age}
+                            value={filter}
                             onChange={handleChange}
                             displayEmpty
                             inputProps={{ 'aria-label': 'Without label' }}
@@ -56,31 +56,14 @@ const History: FC<Props> = ({ className }) => {
                     </FormControl>
                 </Grid>
             </Grid>
-            <Grid item md={12} container direction="column" alignItems="stretch" rowSpacing={4}>
-                <Grid item>
-                    <HistoryItem
-                        type={history.type}
-                        hash={history.hash}
-                        coin={history.coin}
-                        amount={history.amount}
-                        date={history.date}
-                    />
-                </Grid>
-                <Grid item>
+            <Grid item md={12}>
+                <List>
                     <HistoryItem {...history} />
-                </Grid>
-                <Grid item>
                     <HistoryItem {...history} />
-                </Grid>
-                <Grid item>
                     <HistoryItem {...history} />
-                </Grid>
-                <Grid item>
                     <HistoryItem {...history} />
-                </Grid>
-                <Grid item>
                     <HistoryItem {...history} />
-                </Grid>
+                </List>
             </Grid>
             <Grid item md={12} container justifyContent="flex-end">
                 <Grid item>
@@ -91,6 +74,4 @@ const History: FC<Props> = ({ className }) => {
     );
 };
 
-export default styled(History)`
-    // padding: ${({ theme }) => theme.spacing(0, 0)};
-`;
+export default styled(History)``;

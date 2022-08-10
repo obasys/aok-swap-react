@@ -17,7 +17,7 @@ import QRCode from 'react-qr-code';
 import { FaCopy } from 'react-icons/fa';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { AiFillExclamationCircle } from 'react-icons/ai';
-import Logo from '../../../components/assets/Group 6.svg';
+import Logo from '../../../assets/logo.svg';
 
 interface Props {
     className?: string;

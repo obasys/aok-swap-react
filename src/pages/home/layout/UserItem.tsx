@@ -14,13 +14,7 @@ const UserItem: FC<Props> = ({ className }) => {
     return (
         <div className={className}>
             <Container>
-                <Grid
-                    container
-                    direction="row"
-                    // justifyContent="space-between"
-                    alignItems="center"
-                    columnSpacing={3}
-                >
+                <Grid container direction="row" alignItems="center" columnSpacing={3}>
                     <Grid item md>
                         <Typography variant="body1" color="white">
                             {fakeUserName}

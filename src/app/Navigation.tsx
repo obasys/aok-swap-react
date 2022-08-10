@@ -1,9 +1,22 @@
-import React, { FC } from 'react';
-import { AppBar, Box, Button, Container, Grid, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
+import React, { FC, useState, MouseEvent } from 'react';
+import {
+    AppBar,
+    Box,
+    Button,
+    Container,
+    Grid,
+    IconButton,
+    Menu,
+    MenuItem,
+    Toolbar,
+    Typography,
+    Theme,
+    useMediaQuery,
+} from '@mui/material';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
-import Logo from '../components/assets/Group 6.svg';
+import Logo from '../assets/logo.svg';
 
 interface Props {
     className?: string;
@@ -11,9 +24,10 @@ interface Props {
 
 const Navigation: FC<Props> = ({ className }) => {
     const links = ['Contact us', 'Explorer', 'Log out'];
-    const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+    const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+    const mobile = useMediaQuery(({ breakpoints }: Theme) => breakpoints.down('sm'));
 
-    const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+    const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
     };
 
@@ -22,7 +36,7 @@ const Navigation: FC<Props> = ({ className }) => {
     };
 
     const logo = (
-        <Grid item container direction="row" alignItems="center" xs md>
+        <Grid item container xs md>
             <Button component={Link} to="/">
                 <img src={Logo} width={52} height={46.15} alt="logo" />
                 <Typography variant="h6" ml={1} color="white" textTransform="uppercase" fontWeight="300">
@@ -35,6 +49,46 @@ const Navigation: FC<Props> = ({ className }) => {
         </Grid>
     );
 
+    const mobileNav = (
+        <Box flexGrow={1} display="flex">
+            <IconButton size="large" onClick={handleOpenNavMenu}>
+                <MenuRoundedIcon className="menu-icon" />
+            </IconButton>
+            <Menu
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+                keepMounted
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+            >
+                {links.map((page) => (
+                    <MenuItem key={page} onClick={handleCloseNavMenu}>
+                        <Typography textAlign="center">{page}</Typography>
+                    </MenuItem>
+                ))}
+            </Menu>
+        </Box>
+    );
+
+    const desktopNav = (
+        <Box flexGrow={1} display="flex">
+            {links.map((page) => (
+                <Button key={page} onClick={handleCloseNavMenu}>
+                    <Typography color="white" variant="button" my={2}>
+                        {page}
+                    </Typography>
+                </Button>
+            ))}
+        </Box>
+    );
+
     return (
         <AppBar className={className} color="transparent" elevation={0} position="static">
             <Toolbar disableGutters className="tool-bar">
@@ -42,45 +96,7 @@ const Navigation: FC<Props> = ({ className }) => {
                     <Grid container direction="row" alignItems="center">
                         {logo}
                         <Grid item xs="auto" md="auto">
-                            <Box flexGrow={1} display={{ xs: 'flex', md: 'none' }}>
-                                <IconButton size="large" onClick={handleOpenNavMenu} color="inherit">
-                                    <MenuRoundedIcon />
-                                </IconButton>
-                                <Menu
-                                    anchorEl={anchorElNav}
-                                    anchorOrigin={{
-                                        vertical: 'bottom',
-                                        horizontal: 'left',
-                                    }}
-                                    keepMounted
-                                    transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'left',
-                                    }}
-                                    open={Boolean(anchorElNav)}
-                                    onClose={handleCloseNavMenu}
-                                    sx={{
-                                        display: { xs: 'block', md: 'none' },
-                                    }}
-                                >
-                                    {links.map((page) => (
-                                        <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                            <Typography textAlign="center">{page}</Typography>
-                                        </MenuItem>
-                                    ))}
-                                </Menu>
-                            </Box>
-                            <Box flexGrow={1} display={{ xs: 'none', md: 'flex' }}>
-                                {links.map((page) => (
-                                    <Button
-                                        key={page}
-                                        onClick={handleCloseNavMenu}
-                                        sx={{ my: 2, color: 'white', display: 'block' }}
-                                    >
-                                        {page}
-                                    </Button>
-                                ))}
-                            </Box>
+                            {mobile ? mobileNav : desktopNav}
                         </Grid>
                     </Grid>
                 </Container>
@@ -92,5 +108,9 @@ const Navigation: FC<Props> = ({ className }) => {
 export default styled(Navigation)`
     .tool-bar {
         background-color: rgb(112, 129, 201);
+    }
+
+    .menu-icon {
+        color: ${({ theme }) => theme.palette.common.white};
     }
 `;

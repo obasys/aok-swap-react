@@ -1,10 +1,9 @@
 import React, { FC, useEffect } from 'react';
-import { Deposit, History } from './layout';
+import { Deposit, History, UserItem } from './layout';
 import styled from 'styled-components';
 import { Container, Grid, Typography } from '@mui/material';
-import UserItem from './layout/UserItem';
 import { useSnackbar } from 'notistack';
-import ReportSuccess from '../../components/ReportSuccess';
+import { ReportSuccess } from '../../components';
 
 interface Props {
     className?: string;
