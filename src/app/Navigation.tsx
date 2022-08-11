@@ -1,92 +1,72 @@
-import React, { FC, useState, MouseEvent } from 'react';
-import {
-    AppBar,
-    Box,
-    Button,
-    Container,
-    Grid,
-    IconButton,
-    Menu,
-    MenuItem,
-    Toolbar,
-    Typography,
-    Theme,
-    useMediaQuery,
-} from '@mui/material';
+import React, { FC, useState } from 'react';
+import { AppBar, Button, Container, Grid, IconButton, Theme, Toolbar, Typography, useMediaQuery } from '@mui/material';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
-import Logo from '../assets/logo.svg';
+import LogoutIcon from '@mui/icons-material/Logout';
+import Logo from '../assets/logos/logo-green.svg';
+import { MobileDrawer } from './index';
 
 interface Props {
     className?: string;
 }
 
 const Navigation: FC<Props> = ({ className }) => {
-    const links = ['Contact us', 'Explorer', 'Log out'];
-    const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const mobile = useMediaQuery(({ breakpoints }: Theme) => breakpoints.down('sm'));
-
-    const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
-        setAnchorElNav(event.currentTarget);
-    };
-
-    const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
-    };
+    const [isDrawerOpened, setIsDrawerOpened] = useState(false);
 
     const logo = (
-        <Grid item container xs md>
-            <Button component={Link} to="/">
-                <img src={Logo} width={52} height={46.15} alt="logo" />
-                <Typography variant="h6" ml={1} color="white" textTransform="uppercase" fontWeight="300">
-                    sugar
-                </Typography>
-                <Typography color="white" fontWeight="700" variant="h6" textTransform="uppercase">
-                    bridge
-                </Typography>
-            </Button>
-        </Grid>
+        <Button component={Link} to="/">
+            <img src={Logo} width={32} height={32} alt="logo" />
+            <Typography variant="h6" ml={1} color="primary">
+                AOK Swap
+            </Typography>
+        </Button>
     );
 
     const mobileNav = (
-        <Box flexGrow={1} display="flex">
-            <IconButton size="large" onClick={handleOpenNavMenu}>
-                <MenuRoundedIcon className="menu-icon" />
-            </IconButton>
-            <Menu
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                }}
-                keepMounted
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-            >
-                {links.map((page) => (
-                    <MenuItem key={page} onClick={handleCloseNavMenu}>
-                        <Typography textAlign="center">{page}</Typography>
-                    </MenuItem>
-                ))}
-            </Menu>
-        </Box>
+        <div className="mobile-menu-box">
+            <Container className="mobile">
+                {logo}
+                <IconButton size="large" onClick={() => setIsDrawerOpened(true)}>
+                    <MenuRoundedIcon fontSize="large" />
+                </IconButton>
+            </Container>
+        </div>
     );
 
     const desktopNav = (
-        <Box flexGrow={1} display="flex">
-            {links.map((page) => (
-                <Button key={page} onClick={handleCloseNavMenu}>
-                    <Typography color="white" variant="button" my={2}>
-                        {page}
-                    </Typography>
-                </Button>
-            ))}
-        </Box>
+        <Toolbar className="toolbar">
+            <AppBar className="links-box" elevation={0}>
+                <Container>
+                    <div className="links">
+                        <div className="grow">{logo}</div>
+                        <div className="nav-btns">
+                            <Button component={Link} to="/" className="link">
+                                <Typography textTransform="none" variant="body1">
+                                    Home
+                                </Typography>
+                            </Button>
+                            <Button component={Link} to="/deposit" className="link">
+                                <Typography textTransform="none" variant="body1">
+                                    Deposit
+                                </Typography>
+                            </Button>
+                            <Button component={Link} to="/menu" className="link">
+                                <Typography textTransform="none" variant="body1">
+                                    Withdraw
+                                </Typography>
+                            </Button>
+                            <Button className="link" variant="outlined" startIcon={<LogoutIcon />}>
+                                <Typography textTransform="none" variant="body1">
+                                    Logout
+                                </Typography>
+                            </Button>
+                        </div>
+                    </div>
+                </Container>
+            </AppBar>
+        </Toolbar>
     );
 
     return (
@@ -94,11 +74,11 @@ const Navigation: FC<Props> = ({ className }) => {
             <Toolbar disableGutters className="tool-bar">
                 <Container>
                     <Grid container direction="row" alignItems="center">
-                        {logo}
                         <Grid item xs="auto" md="auto">
                             {mobile ? mobileNav : desktopNav}
                         </Grid>
                     </Grid>
+                    <MobileDrawer isDrawerOpened={isDrawerOpened} setIsDrawerOpened={setIsDrawerOpened} />
                 </Container>
             </Toolbar>
         </AppBar>
@@ -106,11 +86,53 @@ const Navigation: FC<Props> = ({ className }) => {
 };
 
 export default styled(Navigation)`
-    .tool-bar {
-        background-color: rgb(112, 129, 201);
-    }
-
     .menu-icon {
         color: ${({ theme }) => theme.palette.common.white};
+    }
+
+    .toolbar {
+        height: 77px;
+    }
+
+    .links-box {
+        background-color: ${({ theme }) => theme.palette.background.default};
+        border-bottom: solid 1px ${({ theme }) => theme.palette.divider};
+    }
+
+    .links {
+        padding: ${({ theme }) => theme.spacing(2, 0)};
+        display: flex;
+        width: 100%;
+
+        .grow {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .link {
+            margin: ${({ theme }) => theme.spacing(0, 2)};
+        }
+
+        .nav-btns {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .mobile-link {
+        margin: ${({ theme }) => theme.spacing(0, 0.5)};
+    }
+
+    .mobile-menu-box {
+        display: flex;
+        align-items: center;
+        border-bottom: solid 1px ${({ theme }) => theme.palette.divider};
+    }
+
+    .mobile {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 `;
