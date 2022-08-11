@@ -27,25 +27,21 @@ const Home: FC<Props> = ({ className }) => {
     }, []);
 
     return (
-        <div className={className}>
+        <Container className={className}>
             <UserItem />
-            <Container className="main-container">
-                <Grid container columnSpacing={6}>
-                    <Grid item md={6}>
-                        <Deposit />
-                    </Grid>
-                    <Grid item md={6}>
-                        <History />
-                    </Grid>
+            <Grid container columnSpacing={6}>
+                <Grid item md={6}>
+                    <Deposit />
                 </Grid>
-            </Container>
-        </div>
+                <Grid item md={6}>
+                    <History />
+                </Grid>
+            </Grid>
+        </Container>
     );
 };
 
 export default styled(Home)`
-    .main-container {
-        padding-top: ${({ theme }) => theme.spacing(2)};
-        margin-top: ${({ theme }) => theme.spacing(5)};
-    }
+    padding-top: ${({ theme }) => theme.spacing(2)};
+    margin-top: ${({ theme }) => theme.spacing(5)};
 `;

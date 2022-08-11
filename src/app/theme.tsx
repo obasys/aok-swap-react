@@ -6,7 +6,7 @@ const theme = createTheme({
             main: '#00665E',
             dark: '#003B34',
             light: '#42948B',
-            contrastText: '#BDD7D5',
+            contrastText: '#fff',
         },
     },
     shape: {
@@ -45,6 +45,25 @@ const theme = createTheme({
 
 theme.components = {
     ...theme.components,
+    MuiButton: {
+        variants: [
+            {
+                props: { variant: 'contained' },
+                style: {
+                    boxShadow: 'none',
+                    borderRadius: '2px',
+                    disableElevation: true,
+                },
+            },
+            {
+                props: { variant: 'outlined' },
+                style: {
+                    boxShadow: 'none',
+                    borderRadius: '2px',
+                },
+            },
+        ],
+    },
 };
 
 export default theme;
