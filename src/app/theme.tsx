@@ -8,6 +8,9 @@ const theme = createTheme({
             light: '#42948B',
             contrastText: '#fff',
         },
+        warning: {
+            main: '#FFBB00',
+        },
     },
     shape: {
         // borderRadius: 0,
@@ -43,6 +46,7 @@ const theme = createTheme({
             lineHeight: '24px',
             letterSpacing: '0.005em',
         },
+        caption: { fontSize: '12px', fontWeight: 400, lineHeight: '12px', letterSpacing: '0.004em' },
     },
 });
 

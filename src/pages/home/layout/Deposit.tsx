@@ -1,46 +1,38 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import {
-    FormControl,
-    Grid,
-    IconButton,
-    InputAdornment,
-    MenuItem,
-    Select,
-    SelectChangeEvent,
-    Stack,
-    TextField,
-    Typography,
-    useTheme,
-} from '@mui/material';
+import { FormControl, Grid, IconButton, MenuItem, Select, SelectChangeEvent, Stack, Typography } from '@mui/material';
 import QRCode from 'react-qr-code';
-import { FaCopy } from 'react-icons/fa';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { AiFillExclamationCircle } from 'react-icons/ai';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import Logo from '../../../assets/logo.svg';
+import { ContentCopyOutlined } from '@mui/icons-material';
+import { useSnackbar } from 'notistack';
 
 interface Props {
     className?: string;
 }
 
 const Deposit: FC<Props> = ({ className }) => {
-    const [cryptocurrency, setСryptocurrency] = React.useState('');
+    const [currency, setCurrency] = React.useState('');
     const inputValue = 'f23hg2h3jh2j3gj2g32k3h2h3k2jh32';
-    const theme = useTheme();
+    const { enqueueSnackbar } = useSnackbar();
 
     const handleChange = (event: SelectChangeEvent) => {
-        setСryptocurrency(event.target.value);
+        setCurrency(event.target.value);
+    };
+    const onCopy = () => {
+        enqueueSnackbar('Address has been successfully copied to clipboard.');
     };
 
     return (
         <div className={className}>
-            <Typography variant="h4" style={{ marginBottom: '40px' }}>
+            <Typography variant="h4" mb={4}>
                 Deposit
             </Typography>
-            <Stack direction="column" justifyContent="space-evenly" alignItems="center" spacing={2}>
+            <div className="deposit-box">
                 <FormControl fullWidth>
                     <Select
-                        value={cryptocurrency}
+                        value={currency}
                         onChange={handleChange}
                         displayEmpty
                         inputProps={{ 'aria-label': 'Without label' }}
@@ -72,51 +64,49 @@ const Deposit: FC<Props> = ({ className }) => {
                     </Select>
                 </FormControl>
                 <div className="qr-code">
-                    <QRCode
-                        value="https://twitter.com/tarnovski_john/status/1544399487765979138"
-                        fgColor={theme.palette.primary.dark}
-                        size={200}
-                    />
+                    <QRCode value="https://twitter.com/tarnovski_john/status/1544399487765979138" size={200} />
                 </div>
-                <TextField
-                    value={inputValue}
-                    disabled
-                    fullWidth
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <CopyToClipboard text={inputValue}>
-                                    <IconButton color="primary">
-                                        <FaCopy />
-                                    </IconButton>
-                                </CopyToClipboard>
-                            </InputAdornment>
-                        ),
-                    }}
-                />
-                <Grid container alignItems="center" columnSpacing={1}>
-                    <Grid item xs="auto" md="auto">
-                        <AiFillExclamationCircle />
-                    </Grid>
-                    <Grid item xs md>
-                        <Typography component="span" variant="body1" color="black">
-                            The balance will be updated automatically when we receive coins on deposit address
-                        </Typography>
-                    </Grid>
-                    <Grid item md={2} />
-                </Grid>
-            </Stack>
+                <Typography color="textSecondary" className="copy-txt">
+                    {inputValue}
+                    <CopyToClipboard onCopy={onCopy} text={inputValue}>
+                        <IconButton size="small">
+                            <ContentCopyOutlined className="icon-btn" />
+                        </IconButton>
+                    </CopyToClipboard>
+                </Typography>
+                <div className="deposit-warning">
+                    <InfoOutlinedIcon color="warning" />
+                    <Typography variant="caption" display="block" ml={1}>
+                        The balance will be updated automatically when we receive coins on deposit address
+                    </Typography>
+                </div>
+            </div>
         </div>
     );
 };
 
 export default styled(Deposit)`
-    padding: ${({ theme }) => theme.spacing(0, 0)};
+    .deposit-warning {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .deposit-box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 
     .qr-code {
-        border: 4px solid ${({ theme }) => theme.palette.primary.main};
-        padding: 15px;
-        box-shadow: 6px 6px 0px 0px ${({ theme }) => theme.palette.primary.main};
-        margin-bottom: 10px;
+        margin: ${({ theme }) => theme.spacing(6.5, 0, 3)};
+    }
+
+    .copy-txt {
+        margin: ${({ theme }) => theme.spacing(2)};
+        padding: ${({ theme }) => theme.spacing(2, 7)};
+        border: gray 1px solid;
+        border-radius: 4px;
     }
 `;

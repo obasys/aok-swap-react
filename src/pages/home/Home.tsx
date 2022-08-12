@@ -12,19 +12,19 @@ interface Props {
 const Home: FC<Props> = ({ className }) => {
     const { enqueueSnackbar } = useSnackbar();
 
-    useEffect(() => {
-        const handleClick = () => {
-            enqueueSnackbar(<Typography>You just deposited 23,315.0000 SUGAR on your account</Typography>, {
-                anchorOrigin: {
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                },
-                content: (key, message) => <ReportSuccess id={key} message={message} />,
-                persist: true,
-            });
-        };
-        handleClick();
-    }, []);
+    // useEffect(() => {
+    //     const handleClick = () => {
+    //         enqueueSnackbar(<Typography>You just deposited 23,315.0000 SUGAR on your account</Typography>, {
+    //             anchorOrigin: {
+    //                 vertical: 'bottom',
+    //                 horizontal: 'left',
+    //             },
+    //             content: (key, message) => <ReportSuccess id={key} message={message} />,
+    //             persist: true,
+    //         });
+    //     };
+    //     handleClick();
+    // }, []);
 
     return (
         <Container className={className}>
@@ -42,6 +42,6 @@ const Home: FC<Props> = ({ className }) => {
 };
 
 export default styled(Home)`
-    padding-top: ${({ theme }) => theme.spacing(2)};
+    padding: ${({ theme }) => theme.spacing(2, 0, 6)};
     margin-top: ${({ theme }) => theme.spacing(5)};
 `;

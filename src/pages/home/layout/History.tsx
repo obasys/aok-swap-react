@@ -41,12 +41,7 @@ const History: FC<Props> = ({ className }) => {
                 </Grid>
                 <Grid item md="auto">
                     <FormControl size="small">
-                        <Select
-                            value={filter}
-                            onChange={handleChange}
-                            displayEmpty
-                            inputProps={{ 'aria-label': 'Without label' }}
-                        >
+                        <Select value={filter} onChange={handleChange} displayEmpty variant="standard">
                             <MenuItem value="">
                                 <em>None</em>
                             </MenuItem>
