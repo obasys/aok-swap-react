@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { Chip, Grid, ListItemButton, Typography } from '@mui/material';
+import { Avatar, ListItemAvatar, ListItemButton, ListItemText, Paper, Typography } from '@mui/material';
 import moment from 'moment';
 import { IoArrowDownSharp, IoArrowUpSharp } from 'react-icons/io5';
 
@@ -11,30 +11,30 @@ interface Props {
     coin: string;
     amount: number;
     type: 'sent' | 'received';
+    icon?: string;
 }
 
-const HistoryItem: FC<Props> = ({ className, hash, coin, date, amount, type }) => {
+const HistoryItem: FC<Props> = ({ className, hash, coin, date, amount, type, icon }) => {
     return (
-        <ListItemButton className={className}>
-            <Grid container direction="row" alignItems="center" columnSpacing={3}>
-                <Grid item xs="auto" md="auto">
-                    {type === 'sent' ? <IoArrowUpSharp /> : <IoArrowDownSharp />}
-                </Grid>
-                <Grid item md xs>
-                    <Typography variant="body2">{hash.slice(0, 23) + '...'}</Typography>
-                    <Chip label={coin} variant="outlined" color="primary" size="small" />
-                </Grid>
-                <Grid item xs md>
-                    <Typography align="right">
-                        {type === 'sent' ? '+' : '-'}
-                        {amount}
-                        {coin}
-                    </Typography>
-                    <Typography align="right">{moment(date).startOf('day').fromNow()}</Typography>
-                </Grid>
-            </Grid>
-        </ListItemButton>
+        <Paper className={className} variant="outlined">
+            <ListItemButton>
+                <ListItemAvatar>
+                    <Avatar>{type === 'sent' ? <IoArrowUpSharp /> : <IoArrowDownSharp />}</Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                    primary={<Typography variant="subtitle1">{hash.slice(0, 23) + '...'}</Typography>}
+                    secondary={<Typography variant="subtitle2">{moment(date).startOf('day').fromNow()}</Typography>}
+                />
+                <img src={icon} alt="coin" />
+                <Typography align="right" ml={1} variant="h6">
+                    {coin} {type === 'sent' ? '+' : '-'}
+                    {amount}
+                </Typography>
+            </ListItemButton>
+        </Paper>
     );
 };
 
-export default styled(HistoryItem)``;
+export default styled(HistoryItem)`
+    margin-bottom: 8px;
+`;

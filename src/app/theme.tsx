@@ -22,12 +22,15 @@ const theme = createTheme({
             letterSpacing: '0.002em',
         },
         h4: {
-            fontWeight: 500,
+            fontWeight: 400,
             fontSize: '34px',
         },
         h3: {
             fontWeight: 500,
             lineHeight: '72px',
+        },
+        h6: {
+            fontSize: '20px',
         },
         button: {
             fontWeight: 400,

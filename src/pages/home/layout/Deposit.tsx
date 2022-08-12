@@ -34,7 +34,7 @@ const Deposit: FC<Props> = ({ className }) => {
 
     return (
         <div className={className}>
-            <Typography variant="h4" fontWeight={700} style={{ marginBottom: '40px' }}>
+            <Typography variant="h4" style={{ marginBottom: '40px' }}>
                 Deposit
             </Typography>
             <Stack direction="column" justifyContent="space-evenly" alignItems="center" spacing={2}>
