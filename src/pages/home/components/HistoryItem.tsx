@@ -22,7 +22,11 @@ const HistoryItem: FC<Props> = ({ className, hash, coin, date, amount, type, ico
                     <Avatar>{type === 'sent' ? <IoArrowUpSharp /> : <IoArrowDownSharp />}</Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                    primary={<Typography variant="subtitle1">{hash.slice(0, 23) + '...'}</Typography>}
+                    primary={
+                        <Typography variant="subtitle1" noWrap>
+                            {hash.slice(0, 23) + '...'}
+                        </Typography>
+                    }
                     secondary={<Typography variant="subtitle2">{moment(date).startOf('day').fromNow()}</Typography>}
                 />
                 <img src={icon} alt="coin" />

@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { AppBar, Button, Container, Grid, IconButton, Theme, Toolbar, Typography, useMediaQuery } from '@mui/material';
+import { AppBar, Button, Container, IconButton, Theme, Toolbar, Typography, useMediaQuery } from '@mui/material';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
@@ -25,13 +25,11 @@ const Navigation: FC<Props> = ({ className }) => {
     );
 
     const mobileNav = (
-        <div className="mobile-menu-box">
-            <Container className="mobile">
-                {logo}
-                <IconButton size="large" onClick={() => setIsDrawerOpened(true)}>
-                    <MenuRoundedIcon fontSize="large" />
-                </IconButton>
-            </Container>
+        <div className="mobile">
+            {logo}
+            <IconButton size="large" onClick={() => setIsDrawerOpened(true)}>
+                <MenuRoundedIcon fontSize="large" />
+            </IconButton>
         </div>
     );
 
@@ -72,24 +70,14 @@ const Navigation: FC<Props> = ({ className }) => {
     return (
         <AppBar className={className} color="transparent" elevation={0} position="static">
             <Toolbar disableGutters className="tool-bar">
-                <Container>
-                    <Grid container direction="row" alignItems="center">
-                        <Grid item xs="auto" md="auto">
-                            {mobile ? mobileNav : desktopNav}
-                        </Grid>
-                    </Grid>
-                    <MobileDrawer isDrawerOpened={isDrawerOpened} setIsDrawerOpened={setIsDrawerOpened} />
-                </Container>
+                {mobile ? mobileNav : desktopNav}
+                <MobileDrawer isDrawerOpened={isDrawerOpened} setIsDrawerOpened={setIsDrawerOpened} />
             </Toolbar>
         </AppBar>
     );
 };
 
 export default styled(Navigation)`
-    .menu-icon {
-        color: ${({ theme }) => theme.palette.common.white};
-    }
-
     .toolbar {
         height: 77px;
     }
@@ -120,19 +108,11 @@ export default styled(Navigation)`
         }
     }
 
-    .mobile-link {
-        margin: ${({ theme }) => theme.spacing(0, 0.5)};
-    }
-
-    .mobile-menu-box {
-        display: flex;
-        align-items: center;
-        border-bottom: solid 1px ${({ theme }) => theme.palette.divider};
-    }
-
     .mobile {
+        width: 100vw;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        border-bottom: solid 1px ${({ theme }) => theme.palette.divider};
     }
 `;

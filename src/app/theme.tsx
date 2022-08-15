@@ -11,6 +11,7 @@ const theme = createTheme({
         warning: {
             main: '#FFBB00',
         },
+        divider: '#F5F5F5',
     },
     shape: {
         // borderRadius: 0,

@@ -1,39 +1,23 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { Deposit, History, UserItem } from './layout';
 import styled from 'styled-components';
-import { Container, Grid, Typography } from '@mui/material';
-import { useSnackbar } from 'notistack';
-import { ReportSuccess } from '../../components';
+import { Container, Grid, Theme, useMediaQuery } from '@mui/material';
 
 interface Props {
     className?: string;
 }
 
 const Home: FC<Props> = ({ className }) => {
-    const { enqueueSnackbar } = useSnackbar();
-
-    // useEffect(() => {
-    //     const handleClick = () => {
-    //         enqueueSnackbar(<Typography>You just deposited 23,315.0000 SUGAR on your account</Typography>, {
-    //             anchorOrigin: {
-    //                 vertical: 'bottom',
-    //                 horizontal: 'left',
-    //             },
-    //             content: (key, message) => <ReportSuccess id={key} message={message} />,
-    //             persist: true,
-    //         });
-    //     };
-    //     handleClick();
-    // }, []);
+    const mobile = useMediaQuery(({ breakpoints }: Theme) => breakpoints.down('sm'));
 
     return (
         <Container className={className}>
             <UserItem />
-            <Grid container columnSpacing={6}>
-                <Grid item md={6}>
+            <Grid container columnSpacing={6} rowSpacing={6} mt={mobile ? 0 : 8}>
+                <Grid item md={6} xs={12}>
                     <Deposit />
                 </Grid>
-                <Grid item md={6}>
+                <Grid item md={6} xs={12}>
                     <History />
                 </Grid>
             </Grid>
@@ -42,6 +26,6 @@ const Home: FC<Props> = ({ className }) => {
 };
 
 export default styled(Home)`
-    padding: ${({ theme }) => theme.spacing(2, 0, 6)};
+    padding-bottom: ${({ theme }) => theme.spacing(6)};
     margin-top: ${({ theme }) => theme.spacing(5)};
 `;

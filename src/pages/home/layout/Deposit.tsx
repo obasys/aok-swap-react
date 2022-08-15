@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { FormControl, Grid, IconButton, MenuItem, Select, SelectChangeEvent, Stack, Typography } from '@mui/material';
+import { FormControl, Grid, IconButton, MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
 import QRCode from 'react-qr-code';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -31,12 +31,7 @@ const Deposit: FC<Props> = ({ className }) => {
             </Typography>
             <div className="deposit-box">
                 <FormControl fullWidth>
-                    <Select
-                        value={currency}
-                        onChange={handleChange}
-                        displayEmpty
-                        inputProps={{ 'aria-label': 'Without label' }}
-                    >
+                    <Select value={currency} onChange={handleChange} displayEmpty fullWidth>
                         <MenuItem value="">
                             <em>None</em>
                         </MenuItem>
@@ -66,7 +61,7 @@ const Deposit: FC<Props> = ({ className }) => {
                 <div className="qr-code">
                     <QRCode value="https://twitter.com/tarnovski_john/status/1544399487765979138" size={200} />
                 </div>
-                <Typography color="textSecondary" className="copy-txt">
+                <Typography color="textSecondary" className="copy-txt" noWrap>
                     {inputValue}
                     <CopyToClipboard onCopy={onCopy} text={inputValue}>
                         <IconButton size="small">
@@ -106,7 +101,7 @@ export default styled(Deposit)`
     .copy-txt {
         margin: ${({ theme }) => theme.spacing(2)};
         padding: ${({ theme }) => theme.spacing(2, 7)};
-        border: gray 1px solid;
+        border: ${({ theme }) => theme.palette.divider} 1px solid;
         border-radius: 4px;
     }
 `;

@@ -36,10 +36,10 @@ const History: FC<Props> = ({ className }) => {
     return (
         <div className={className}>
             <Grid item container alignItems="center" md={12} mb={3}>
-                <Grid item md>
+                <Grid item md xs>
                     <Typography variant="h4">History</Typography>
                 </Grid>
-                <Grid item md="auto">
+                <Grid item md="auto" xs="auto">
                     <FormControl size="small">
                         <Select value={filter} onChange={handleChange} displayEmpty variant="standard">
                             <MenuItem value="">
