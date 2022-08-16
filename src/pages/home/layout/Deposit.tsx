@@ -7,6 +7,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import Logo from '../../../assets/logo.svg';
 import { ContentCopyOutlined } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
+import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 
 interface Props {
     className?: string;
@@ -31,7 +32,13 @@ const Deposit: FC<Props> = ({ className }) => {
             </Typography>
             <div className="deposit-box">
                 <FormControl fullWidth>
-                    <Select value={currency} onChange={handleChange} displayEmpty fullWidth>
+                    <Select
+                        value={currency}
+                        onChange={handleChange}
+                        displayEmpty
+                        fullWidth
+                        IconComponent={ExpandMoreRoundedIcon}
+                    >
                         <MenuItem value="">
                             <em>None</em>
                         </MenuItem>

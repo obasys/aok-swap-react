@@ -3,6 +3,7 @@ import { FormControl, Grid, List, MenuItem, Select, SelectChangeEvent, Typograph
 import styled from 'styled-components';
 import { HistoryItem } from '../components';
 import coinIcon from '../../../assets/ABBC.svg';
+import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 
 type HistoryItemType = {
     hash: string;
@@ -41,7 +42,14 @@ const History: FC<Props> = ({ className }) => {
                 </Grid>
                 <Grid item md="auto" xs="auto">
                     <FormControl size="small">
-                        <Select value={filter} onChange={handleChange} displayEmpty variant="standard">
+                        <Select
+                            value={filter}
+                            onChange={handleChange}
+                            displayEmpty
+                            disableUnderline
+                            variant="standard"
+                            IconComponent={ExpandMoreRoundedIcon}
+                        >
                             <MenuItem value="">
                                 <em>None</em>
                             </MenuItem>

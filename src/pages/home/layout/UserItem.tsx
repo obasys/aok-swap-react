@@ -21,6 +21,7 @@ import { ContentCopyOutlined } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import { BiDownload, BiUpload } from 'react-icons/all';
 import { ReportSuccess } from '../../../components';
+import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 
 interface Props {
     className?: string;
@@ -74,9 +75,10 @@ const UserItem: FC<Props> = ({ className }) => {
                         <Select
                             value={cryptocurrency}
                             variant="standard"
-                            fullWidth
                             onChange={handleSelectChange}
                             displayEmpty
+                            disableUnderline
+                            IconComponent={ExpandMoreRoundedIcon}
                         >
                             <MenuItem value="">
                                 <em>None</em>

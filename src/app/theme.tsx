@@ -72,6 +72,36 @@ theme.components = {
             },
         ],
     },
+    MuiSelect: {
+        styleOverrides: {
+            standard: {
+                borderColor: 'red',
+                ':root': {
+                    '& fieldset': {
+                        borderColor: 'red',
+                    },
+                },
+                '& fieldset': {
+                    borderColor: 'red',
+                },
+                // '	.MuiSelect-outlined'
+                '.MuiOutlinedInput-root': {
+                    '& fieldset': {
+                        borderColor: 'red',
+                    },
+                },
+            },
+        },
+    },
+    MuiOutlinedInput: {
+        styleOverrides: {
+            root: {
+                '& fieldset': {
+                    borderColor: theme.palette.divider,
+                },
+            },
+        },
+    },
 };
 
 export default theme;
