@@ -1,6 +1,15 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { FormControl, Grid, IconButton, MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
+import {
+    FormControl,
+    IconButton,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+    Theme,
+    Typography,
+    useMediaQuery,
+} from '@mui/material';
 import QRCode from 'react-qr-code';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -15,6 +24,8 @@ interface Props {
 }
 
 const Deposit: FC<Props> = ({ className }) => {
+    const mobile = useMediaQuery(({ breakpoints }: Theme) => breakpoints.down('sm'));
+
     const [currency, setCurrency] = React.useState('1');
     const inputValue = 'f23hg2h3jh2j3gj2g32k3h2h3k2jh32';
     const { enqueueSnackbar } = useSnackbar();
@@ -54,7 +65,10 @@ const Deposit: FC<Props> = ({ className }) => {
                     </Select>
                 </FormControl>
                 <div className="qr-code">
-                    <QRCode value="https://twitter.com/tarnovski_john/status/1544399487765979138" size={200} />
+                    <QRCode
+                        value="https://twitter.com/tarnovski_john/status/1544399487765979138"
+                        size={mobile ? 135 : 200}
+                    />
                 </div>
                 <Typography color="textSecondary" className="copy-txt" noWrap>
                     {inputValue}
