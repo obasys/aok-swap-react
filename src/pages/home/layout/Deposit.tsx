@@ -8,13 +8,14 @@ import Logo from '../../../assets/logo.svg';
 import { ContentCopyOutlined } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
+import { DepositSelectItem } from '../components';
 
 interface Props {
     className?: string;
 }
 
 const Deposit: FC<Props> = ({ className }) => {
-    const [currency, setCurrency] = React.useState('');
+    const [currency, setCurrency] = React.useState('1');
     const inputValue = 'f23hg2h3jh2j3gj2g32k3h2h3k2jh32';
     const { enqueueSnackbar } = useSnackbar();
 
@@ -24,6 +25,12 @@ const Deposit: FC<Props> = ({ className }) => {
     const onCopy = () => {
         enqueueSnackbar('Address has been successfully copied to clipboard.');
     };
+    const currencies = [
+        { id: 1, name: 'Bitcoin', shortName: 'BTC', icon: Logo },
+        { id: 2, name: 'ETH', shortName: 'BTC', icon: Logo },
+        { id: 3, name: 'Sugar', shortName: 'BTC', icon: Logo },
+        { id: 4, name: 'Tether', shortName: 'BTC', icon: Logo },
+    ];
 
     return (
         <div className={className}>
@@ -39,30 +46,11 @@ const Deposit: FC<Props> = ({ className }) => {
                         fullWidth
                         IconComponent={ExpandMoreRoundedIcon}
                     >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={10}>
-                            <Grid
-                                container
-                                direction="row"
-                                justifyContent="flex-start"
-                                alignItems="center"
-                                columnSpacing={2}
-                            >
-                                <Grid item md="auto">
-                                    <img src={Logo} width={52} height={46.15} alt="logo" />
-                                </Grid>
-                                <Grid item md="auto">
-                                    <Typography>Sugarchain</Typography>
-                                </Grid>
-                                <Grid item md={5}>
-                                    <Typography sx={{ textTransform: 'uppercase' }}>Sugar</Typography>
-                                </Grid>
-                            </Grid>
-                        </MenuItem>
-                        <MenuItem value={20}>Ethereum</MenuItem>
-                        <MenuItem value={30}>Tether</MenuItem>
+                        {currencies.map((item) => (
+                            <MenuItem value={item.id} key={item.id}>
+                                <DepositSelectItem {...item} />
+                            </MenuItem>
+                        ))}
                     </Select>
                 </FormControl>
                 <div className="qr-code">

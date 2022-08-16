@@ -28,7 +28,7 @@ const History: FC<Props> = ({ className }) => {
         icon: coinIcon,
     };
 
-    const [filter, setFilter] = React.useState('');
+    const [filter, setFilter] = React.useState('10');
 
     const handleChange = (event: SelectChangeEvent) => {
         setFilter(event.target.value as string);
@@ -50,12 +50,15 @@ const History: FC<Props> = ({ className }) => {
                             variant="standard"
                             IconComponent={ExpandMoreRoundedIcon}
                         >
-                            <MenuItem value="">
-                                <em>None</em>
+                            <MenuItem value={10}>
+                                <Typography variant="h6">Deposit</Typography>
                             </MenuItem>
-                            <MenuItem value={10}>Deposit</MenuItem>
-                            <MenuItem value={20}>Deposit</MenuItem>
-                            <MenuItem value={30}>Deposit</MenuItem>
+                            <MenuItem value={20}>
+                                <Typography variant="h6">Deposit</Typography>
+                            </MenuItem>
+                            <MenuItem value={30}>
+                                <Typography variant="h6">Deposit</Typography>
+                            </MenuItem>
                         </Select>
                     </FormControl>
                 </Grid>

@@ -12,11 +12,15 @@ const theme = createTheme({
             main: '#FFBB00',
         },
         divider: '#F5F5F5',
+        grey: {
+            400: '#E0E0E0',
+            500: '#BDBDBD',
+            600: '#9E9E9E',
+            700: '#757575',
+            800: '#616161',
+            900: '#424242',
+        },
     },
-    shape: {
-        // borderRadius: 0,
-    },
-
     typography: {
         fontFamily: 'Titillium Web, Lora, sans-serif',
         h5: {
@@ -72,33 +76,20 @@ theme.components = {
             },
         ],
     },
-    MuiSelect: {
-        styleOverrides: {
-            standard: {
-                borderColor: 'red',
-                ':root': {
-                    '& fieldset': {
-                        borderColor: 'red',
-                    },
-                },
-                '& fieldset': {
-                    borderColor: 'red',
-                },
-                // '	.MuiSelect-outlined'
-                '.MuiOutlinedInput-root': {
-                    '& fieldset': {
-                        borderColor: 'red',
-                    },
-                },
-            },
-        },
-    },
     MuiOutlinedInput: {
         styleOverrides: {
             root: {
                 '& fieldset': {
                     borderColor: theme.palette.divider,
                 },
+            },
+        },
+    },
+    MuiAvatar: {
+        styleOverrides: {
+            colorDefault: {
+                color: theme.palette.grey['600'],
+                backgroundColor: theme.palette.grey['100'],
             },
         },
     },
