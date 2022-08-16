@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import {
     Avatar,
@@ -22,6 +22,7 @@ import { useSnackbar } from 'notistack';
 import { BiDownload, BiUpload } from 'react-icons/all';
 import { ReportSuccess } from '../../../components';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
+import { CurrencySelectItem } from '../components';
 
 interface Props {
     className?: string;
@@ -32,7 +33,7 @@ const UserItem: FC<Props> = ({ className }) => {
 
     const fakeUserName = 'Oleh Smith';
     const inputValue = 'f23hg2h3jh2j3gj2g32k3h2h3k2jh32';
-    const [cryptocurrency, setCryptocurrency] = React.useState('');
+    const [cryptocurrency, setCryptocurrency] = useState('1');
     const { enqueueSnackbar } = useSnackbar();
 
     const handleSelectChange = (event: SelectChangeEvent) => {
@@ -46,6 +47,13 @@ const UserItem: FC<Props> = ({ className }) => {
             content: (key, message) => <ReportSuccess id={key} message={message} />,
         });
     };
+
+    const currencies = [
+        { id: 1, name: 'BTC', icon: Logo, balance: 92292929292 },
+        { id: 2, name: 'ETH', icon: Logo, balance: 92292929292 },
+        { id: 3, name: 'Sugar', icon: Logo, balance: 92292929292 },
+        { id: 4, name: 'Tether', icon: Logo, balance: 92292929292 },
+    ];
 
     return (
         <Paper className={className} variant="outlined">
@@ -70,7 +78,7 @@ const UserItem: FC<Props> = ({ className }) => {
                 </Grid>
             </Grid>
             <Grid container alignItems="center" justifyContent="space-between" columnSpacing={2}>
-                <Grid item md={4} xs={12} pb={mobile ? 4 : 0}>
+                <Grid item md="auto" xs={12} pb={mobile ? 4 : 0}>
                     <FormControl fullWidth>
                         <Select
                             value={cryptocurrency}
@@ -80,30 +88,11 @@ const UserItem: FC<Props> = ({ className }) => {
                             disableUnderline
                             IconComponent={ExpandMoreRoundedIcon}
                         >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            <MenuItem value={10}>
-                                <Grid
-                                    container
-                                    direction="row"
-                                    justifyContent="flex-start"
-                                    alignItems="center"
-                                    columnSpacing={2}
-                                >
-                                    <Grid item md="auto">
-                                        <img src={Logo} width={52} height={46.15} alt="logo" />
-                                    </Grid>
-                                    <Grid item md="auto">
-                                        <Typography>Sugarchain</Typography>
-                                    </Grid>
-                                    <Grid item md={5}>
-                                        <Typography sx={{ textTransform: 'uppercase' }}>Sugar</Typography>
-                                    </Grid>
-                                </Grid>
-                            </MenuItem>
-                            <MenuItem value={20}>Ethereum</MenuItem>
-                            <MenuItem value={30}>Tether</MenuItem>
+                            {currencies.map((item) => (
+                                <MenuItem value={item.id} key={item.id}>
+                                    <CurrencySelectItem {...item} />
+                                </MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
                 </Grid>
@@ -129,7 +118,6 @@ const UserItem: FC<Props> = ({ className }) => {
 
 export default styled(UserItem)`
     padding: ${({ theme }) => theme.spacing(4, 3)};
-    //margin-bottom: ${({ theme }) => theme.spacing(8)};
 
     .button {
         text-transform: none;

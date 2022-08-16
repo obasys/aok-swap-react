@@ -35,61 +35,36 @@ const MobileDrawer: FC<Props> = ({ className, isDrawerOpened, setIsDrawerOpened 
                             className="link-text"
                             primary={
                                 <Typography variant="h6" textTransform="uppercase">
-                                    AOK News
+                                    AOK Swap
                                 </Typography>
                             }
                         />
                     </ListItemButton>
                 </ListItem>
                 <ListItem className="link">
-                    <ListItemButton onClick={onClose} component={Link} to="/features">
+                    <ListItemButton onClick={onClose} component={Link} to="/history">
                         <ListItemText
                             className="link-text"
                             primary={
                                 <Typography variant="h6" textTransform="uppercase">
-                                    Features
+                                    History
                                 </Typography>
                             }
                         />
                     </ListItemButton>
                 </ListItem>
                 <ListItem className="link">
-                    <ListItemButton onClick={onClose} component={Link} to="/support">
+                    <ListItemButton onClick={onClose} component={Link} to="/deposit">
                         <ListItemText
                             className="link-text"
                             primary={
                                 <Typography variant="h6" textTransform="uppercase">
-                                    Support
+                                    Deposit
                                 </Typography>
                             }
                         />
                     </ListItemButton>
                 </ListItem>
-                <ListItem className="link">
-                    <ListItemButton onClick={onClose} component={Link} to="/about">
-                        <ListItemText
-                            className="link-text"
-                            primary={
-                                <Typography variant="h6" textTransform="uppercase">
-                                    About
-                                </Typography>
-                            }
-                        />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem className="link">
-                    <ListItemButton onClick={onClose} component={Link} to="/build">
-                        <ListItemText
-                            className="link-text"
-                            primary={
-                                <Typography variant="h6" textTransform="uppercase">
-                                    Build
-                                </Typography>
-                            }
-                        />
-                    </ListItemButton>
-                </ListItem>
-
                 <ListItem className="link">
                     <ListItemButton>
                         <ListItemText
