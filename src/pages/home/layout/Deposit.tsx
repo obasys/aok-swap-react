@@ -17,7 +17,7 @@ import Logo from '../../../assets/logo.svg';
 import { ContentCopyOutlined } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
-import { DepositSelectItem } from '../components';
+import { CurrencySelectItem } from '../components';
 
 interface Props {
     className?: string;
@@ -59,7 +59,7 @@ const Deposit: FC<Props> = ({ className }) => {
                     >
                         {currencies.map((item) => (
                             <MenuItem value={item.id} key={item.id}>
-                                <DepositSelectItem {...item} />
+                                <CurrencySelectItem {...item} />
                             </MenuItem>
                         ))}
                     </Select>

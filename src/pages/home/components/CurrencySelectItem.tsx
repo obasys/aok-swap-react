@@ -1,22 +1,27 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { Typography } from '@mui/material';
-import NumberFormat from 'react-number-format';
+import { Avatar, Typography } from '@mui/material';
 
 interface Props {
     className?: string;
     id?: number;
     name?: string;
+    shortName?: string;
     icon?: string;
     balance?: number;
 }
 
-const CurrencySelectItem: FC<Props> = ({ className, name, icon, balance }) => {
+const CurrencySelectItem: FC<Props> = ({ className, name, shortName, icon }) => {
     return (
         <div className={className}>
-            <img src={icon} width={24} height={24} alt="logo" className="select-icon" />
-            <Typography variant="h6">
-                {name} <NumberFormat displayType="text" decimalScale={4} thousandSeparator value={balance} />
+            <Avatar>
+                <img src={icon} width={24} height={24} alt="logo" />
+            </Avatar>
+            <Typography variant="subtitle1" ml={1}>
+                {name}
+            </Typography>
+            <Typography variant="subtitle1" color="textSecondary" ml={1}>
+                {shortName}
             </Typography>
         </div>
     );
@@ -26,8 +31,4 @@ export default styled(CurrencySelectItem)`
     display: flex;
     justify-content: flex-start;
     align-items: center;
-
-    .select-icon {
-        padding-right: ${({ theme }) => theme.spacing(1)};
-    }
 `;

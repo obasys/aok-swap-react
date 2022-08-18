@@ -16,7 +16,7 @@ import {
 import Logo from '../../../assets/logo.svg';
 import { BiUpload } from 'react-icons/all';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
-import { CurrencySelectItem } from '../components';
+import { BalanceSelectItem, Withdraw } from '../components';
 
 interface Props {
     className?: string;
@@ -24,6 +24,7 @@ interface Props {
 
 const UserInfo: FC<Props> = ({ className }) => {
     const mobile = useMediaQuery(({ breakpoints }: Theme) => breakpoints.down('sm'));
+    const [openDialog, setOpenDialog] = useState(false);
 
     const fakeUserName = 'Oleh Smith';
     const inputValue = 'f23hg2h3jh2j3gj2g32k3h2h3k2jh32';
@@ -56,7 +57,7 @@ const UserInfo: FC<Props> = ({ className }) => {
                 </Grid>
             </Grid>
             <Grid container alignItems="center" justifyContent="space-between" columnSpacing={2}>
-                <Grid item md="auto" xs={12} pb={mobile ? 4 : 0}>
+                <Grid item sm="auto" xs={12} pb={mobile ? 4 : 0}>
                     <FormControl fullWidth>
                         <Select
                             value={cryptocurrency}
@@ -68,18 +69,25 @@ const UserInfo: FC<Props> = ({ className }) => {
                         >
                             {currencies.map((item) => (
                                 <MenuItem value={item.id} key={item.id}>
-                                    <CurrencySelectItem {...item} />
+                                    <BalanceSelectItem {...item} />
                                 </MenuItem>
                             ))}
                         </Select>
                     </FormControl>
                 </Grid>
                 <Grid item md="auto">
-                    <Button variant="outlined" color="primary" className="button" startIcon={<BiUpload />}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        className="button"
+                        startIcon={<BiUpload />}
+                        onClick={() => setOpenDialog(true)}
+                    >
                         Withdraw
                     </Button>
                 </Grid>
             </Grid>
+            <Withdraw open={openDialog} onClose={() => setOpenDialog(false)} />
         </Paper>
     );
 };

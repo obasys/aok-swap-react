@@ -63,7 +63,7 @@ const Navigation: FC<Props> = ({ className }) => {
         <div className={className}>
             <Toolbar>
                 <AppBar className="links-box" elevation={0}>
-                    {mobile ? mobileNav : desktopNav}{' '}
+                    {mobile ? mobileNav : desktopNav}
                 </AppBar>
             </Toolbar>
             <MobileDrawer isDrawerOpened={isDrawerOpened} setIsDrawerOpened={setIsDrawerOpened} />
