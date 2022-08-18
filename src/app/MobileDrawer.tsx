@@ -1,8 +1,18 @@
 import React, { FC } from 'react';
-import { Container, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Typography } from '@mui/material';
+import {
+    Container,
+    Drawer,
+    IconButton,
+    Link,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemText,
+    Typography,
+} from '@mui/material';
 import styled from 'styled-components';
 import { MdOutlineClose } from 'react-icons/md';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 interface Props {
     className?: string;
@@ -30,7 +40,7 @@ const MobileDrawer: FC<Props> = ({ className, isDrawerOpened, setIsDrawerOpened 
             </Container>
             <List className="mobile-list">
                 <ListItem className="link">
-                    <ListItemButton onClick={onClose} component={Link} to="/">
+                    <ListItemButton onClick={onClose} component={RouterLink} to="/">
                         <ListItemText
                             className="link-text"
                             primary={
@@ -42,24 +52,18 @@ const MobileDrawer: FC<Props> = ({ className, isDrawerOpened, setIsDrawerOpened 
                     </ListItemButton>
                 </ListItem>
                 <ListItem className="link">
-                    <ListItemButton onClick={onClose} component={Link} to="/history">
+                    <ListItemButton
+                        onClick={onClose}
+                        component={Link}
+                        href="https://aokscan.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
                         <ListItemText
                             className="link-text"
                             primary={
                                 <Typography variant="h6" textTransform="uppercase">
-                                    History
-                                </Typography>
-                            }
-                        />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem className="link">
-                    <ListItemButton onClick={onClose} component={Link} to="/deposit">
-                        <ListItemText
-                            className="link-text"
-                            primary={
-                                <Typography variant="h6" textTransform="uppercase">
-                                    Deposit
+                                    Explorer
                                 </Typography>
                             }
                         />

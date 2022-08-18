@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Deposit, History, UserItem } from './layout';
+import { Deposit, History, UserInfo } from './layout';
 import styled from 'styled-components';
 import { Container, Grid, Theme, useMediaQuery } from '@mui/material';
 
@@ -12,12 +12,12 @@ const Home: FC<Props> = ({ className }) => {
 
     return (
         <Container className={className}>
-            <UserItem />
+            <UserInfo />
             <Grid container columnSpacing={6} rowSpacing={6} mt={mobile ? 0 : 8}>
-                <Grid item md={6} xs={12}>
+                <Grid item md={5} xs={12}>
                     <Deposit />
                 </Grid>
-                <Grid item md={6} xs={12}>
+                <Grid item md={7} xs={12}>
                     <History />
                 </Grid>
             </Grid>

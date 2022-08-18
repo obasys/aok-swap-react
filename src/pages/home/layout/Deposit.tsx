@@ -34,7 +34,7 @@ const Deposit: FC<Props> = ({ className }) => {
         setCurrency(event.target.value);
     };
     const onCopy = () => {
-        enqueueSnackbar('Address has been successfully copied to clipboard.');
+        enqueueSnackbar('Address has been successfully copied to clipboard.', { variant: 'success' });
     };
     const currencies = [
         { id: 1, name: 'Bitcoin', shortName: 'BTC', icon: Logo },

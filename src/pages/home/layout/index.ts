@@ -1,5 +1,5 @@
 import Deposit from './Deposit';
 import History from './History';
-import UserItem from './UserItem';
+import UserInfo from './UserInfo';
 
-export { Deposit, History, UserItem };
+export { Deposit, History, UserInfo };
