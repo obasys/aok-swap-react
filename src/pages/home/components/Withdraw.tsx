@@ -17,15 +17,17 @@ import {
     Grid,
     Typography,
 } from '@mui/material';
-import Logo from '../../../assets/logo.svg';
-import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
-import { CurrencySelectItem } from './index';
-import CloseIcon from '@mui/icons-material/Close';
+import { LoadingButton } from '@mui/lab';
 import { useForm, Controller } from 'react-hook-form';
 import NumberFormat from 'react-number-format';
-import { LoadingButton } from '@mui/lab';
-
+import { useSnackbar } from 'notistack';
+import { CurrencySelectItem } from './index';
 // import { isAddress as isAOKAddress } from '../../../services/address';
+
+import Logo from '../../../assets/logo.svg';
+import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
+import CloseIcon from '@mui/icons-material/Close';
+import { IoWalletOutline } from 'react-icons/io5';
 
 interface Props {
     className?: string;
@@ -40,25 +42,39 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
         register,
         handleSubmit,
         control,
-        setValue,
         reset,
         watch,
         formState: { errors: fieldsErrors },
-    } = useForm<{ address: string; amount: string; fee: string }>({ defaultValues: { fee: String(0.001) } });
+    } = useForm<{ address: string; amount: string; currency: string }>();
 
     const currencies = [
         { id: 1, name: 'Bitcoin', shortName: 'BTC', icon: Logo },
-        { id: 2, name: 'ETH', shortName: 'BTC', icon: Logo },
-        { id: 3, name: 'Sugar', shortName: 'BTC', icon: Logo },
-        { id: 4, name: 'Tether', shortName: 'BTC', icon: Logo },
+        { id: 2, name: 'ETH', shortName: 'ETH', icon: Logo },
+        { id: 3, name: 'Sugar', shortName: 'SGR', icon: Logo },
+        { id: 4, name: 'Tether', shortName: 'TTH', icon: Logo },
     ];
-    const [currency, setCurrency] = useState('1');
+    const [currency, setCurrency] = useState('BTC');
     const [isSending, setIsSending] = useState(false);
+    const { enqueueSnackbar } = useSnackbar();
+    const watchAmount = watch('amount');
 
     const handleSelectChange = (event: SelectChangeEvent) => {
         setCurrency(event.target.value);
     };
-    const isAddress = true;
+
+    const onSubmit = async (data: { address: string; amount: string }) => {
+        try {
+            alert(JSON.stringify(data));
+            reset();
+        } catch (e) {
+            if (e instanceof Error)
+                enqueueSnackbar(e.message, {
+                    variant: 'error',
+                });
+
+            setIsSending(false);
+        }
+    };
 
     return (
         <Dialog open={open} onClose={onClose} fullScreen={mobile} fullWidth maxWidth="sm" className={className}>
@@ -68,28 +84,42 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
             <IconButton className="close-btn" onClick={onClose}>
                 <CloseIcon />
             </IconButton>
-            <form className="withdraw-box">
+            <form className="withdraw-box" onSubmit={handleSubmit(onSubmit)}>
                 <FormControl fullWidth>
-                    <Select
-                        value={currency}
-                        onChange={handleSelectChange}
-                        displayEmpty
-                        fullWidth
-                        IconComponent={ExpandMoreRoundedIcon}
-                    >
-                        {currencies.map((item) => (
-                            <MenuItem value={item.id} key={item.id}>
-                                <CurrencySelectItem {...item} />
-                            </MenuItem>
-                        ))}
-                    </Select>
+                    <Controller
+                        name="currency"
+                        render={({ field }) => (
+                            <Select
+                                {...field}
+                                {...register('currency')}
+                                className="form-field"
+                                value={currency}
+                                onChange={handleSelectChange}
+                                displayEmpty
+                                fullWidth
+                                IconComponent={ExpandMoreRoundedIcon}
+                            >
+                                {currencies.map((item) => (
+                                    <MenuItem value={item.shortName} key={item.id}>
+                                        <CurrencySelectItem {...item} />
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        )}
+                        control={control}
+                        rules={{
+                            required: 'Currency required',
+                            // validate: isAddress,
+                        }}
+                    />
                     <Controller
                         name="address"
-                        render={({ field }) => (
+                        render={({ field: { value, ...rest } }) => (
                             <TextField
-                                {...field}
+                                {...rest}
+                                value={value ?? ''}
                                 id="address"
-                                className="txt-field"
+                                className="form-field"
                                 variant="outlined"
                                 color="primary"
                                 label="Withdraw Address"
@@ -108,13 +138,14 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
                     />
                     <Controller
                         name="amount"
-                        render={({ field }) => (
+                        render={({ field: { value, ...rest } }) => (
                             <NumberFormat
-                                {...field}
+                                {...rest}
+                                value={value ?? ''}
                                 customInput={TextField}
                                 thousandSeparator
                                 allowNegative={false}
-                                className="txt-field"
+                                className="form-field"
                                 label="Amount"
                                 placeholder="Enter the amount"
                                 isNumericString
@@ -150,25 +181,16 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
                     <Grid item xs={12} md={8} sm={8}>
                         <Typography variant="body2">Total send:</Typography>
                         <div className="total-box">
-                            <Typography
-                                variant="h5"
-                                color="primary"
-                                className="total-send-value"
-                                textOverflow="ellipsis"
-                                overflow="hidden"
-                                noWrap
-                            >
+                            <Typography variant="h5" color="primary" textOverflow="ellipsis" overflow="hidden" noWrap>
                                 <NumberFormat
                                     displayType="text"
-                                    // value={(watchFee || 0) + (watchAmount || 0)}
-                                    value={22}
+                                    value={watchAmount || 0}
                                     isNumericString
                                     decimalScale={4}
                                     thousandSeparator
                                     fixedDecimalScale
                                 />
                             </Typography>
-
                             <Typography variant="h6" color="primary" className="total-send-currency" fontWeight="bold">
                                 {currency}
                             </Typography>
@@ -181,7 +203,7 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
                             color="primary"
                             variant="contained"
                             type="submit"
-                            // startIcon={<IoWalletOutline />}
+                            startIcon={<IoWalletOutline />}
                             size="large"
                         >
                             <Typography color="white" variant="button">
@@ -206,7 +228,7 @@ export default styled(Withdraw)`
         top: 16px;
     }
 
-    .txt-field {
+    .form-field {
         margin-top: ${({ theme }) => theme.spacing(2)};
     }
 
@@ -223,14 +245,11 @@ export default styled(Withdraw)`
         display: flex;
         align-items: flex-end;
 
-        .total-send-value {
-            font-family: 'Titillium Web', sans-serif;
-            padding-right: ${({ theme }) => theme.spacing(0)};
-        }
-
         .total-send-currency {
             line-height: 1.8;
             padding-bottom: 1px;
+            padding-left: ${({ theme }) => theme.spacing(0.5)};
+            font-weight: bold;
         }
 
         .coin-logo {
