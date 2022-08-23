@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
     Avatar,
@@ -17,17 +17,23 @@ import Logo from '../../../assets/logo.svg';
 import { BiUpload } from 'react-icons/all';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import { BalanceSelectItem, Withdraw } from '../components';
+import useProfile from '../../../api/UseProfile';
+import { useSelector } from 'react-redux';
+import { useSnackbar } from 'notistack';
 
 interface Props {
     className?: string;
 }
 
 const UserInfo: FC<Props> = ({ className }) => {
+    const token = useSelector((state: any) => state.login.token);
+    const { data: profileData, isLoading, error } = useProfile({ auth: token });
+
     const mobile = useMediaQuery(({ breakpoints }: Theme) => breakpoints.down('sm'));
     const [openDialog, setOpenDialog] = useState(false);
+    const { enqueueSnackbar } = useSnackbar();
 
     const fakeUserName = 'Oleh Smith';
-    const inputValue = 'f23hg2h3jh2j3gj2g32k3h2h3k2jh32';
     const [cryptocurrency, setCryptocurrency] = useState('1');
 
     const handleSelectChange = (event: SelectChangeEvent) => {
@@ -41,6 +47,12 @@ const UserInfo: FC<Props> = ({ className }) => {
         { id: 4, name: 'Tether', icon: Logo, balance: 92292929292 },
     ];
 
+    useEffect(() => {
+        if (error) {
+            enqueueSnackbar(`UserInfo: ${error?.message}`, { variant: 'error' });
+        }
+    }, [error]);
+
     return (
         <Paper className={className} variant="outlined">
             <Grid container alignItems="center" justifyContent="space-between" columnSpacing={2} pb={mobile ? 4 : 8}>
@@ -52,7 +64,7 @@ const UserInfo: FC<Props> = ({ className }) => {
                 </Grid>
                 <Grid item md="auto" xs={4} flexDirection="row">
                     <Typography color="textSecondary" noWrap>
-                        {inputValue}
+                        {!isLoading && profileData && profileData.address}
                     </Typography>
                 </Grid>
             </Grid>

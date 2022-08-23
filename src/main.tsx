@@ -8,6 +8,7 @@ import store from './redux/store';
 
 axios.defaults.baseURL = 'https://bridge.codepillow.io';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.headers.get['Content-Type'] = 'application/json';
 
 ReactDOM.render(
     <React.StrictMode>

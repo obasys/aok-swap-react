@@ -28,6 +28,7 @@ import Logo from '../../../assets/logo.svg';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import CloseIcon from '@mui/icons-material/Close';
 import { IoWalletOutline } from 'react-icons/io5';
+import { Withdraw as WithdrawType } from '../../../types/Withdraw';
 
 interface Props {
     className?: string;
@@ -45,7 +46,7 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
         reset,
         watch,
         formState: { errors: fieldsErrors },
-    } = useForm<{ address: string; amount: string; currency: string }>();
+    } = useForm<WithdrawType>();
 
     const currencies = [
         { id: 1, name: 'Bitcoin', shortName: 'BTC', icon: Logo },
@@ -62,7 +63,7 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
         setCurrency(event.target.value);
     };
 
-    const onSubmit = async (data: { address: string; amount: string }) => {
+    const onSubmit = async (data: WithdrawType) => {
         try {
             alert(JSON.stringify(data));
             reset();
@@ -87,11 +88,11 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
             <form className="withdraw-box" onSubmit={handleSubmit(onSubmit)}>
                 <FormControl fullWidth>
                     <Controller
-                        name="currency"
+                        name="network"
                         render={({ field }) => (
                             <Select
                                 {...field}
-                                {...register('currency')}
+                                {...register('network')}
                                 className="form-field"
                                 value={currency}
                                 onChange={handleSelectChange}
