@@ -15,13 +15,13 @@ const CurrencySelectItem: FC<Props> = ({ className, name, shortName, icon }) => 
     return (
         <div className={className}>
             <Avatar>
-                <img src={icon} width={24} height={24} alt="logo" />
+                <img src={icon && icon} width={24} height={24} alt="logo" />
             </Avatar>
             <Typography variant="subtitle1" ml={1}>
-                {name}
+                {name && name}
             </Typography>
             <Typography variant="subtitle1" color="textSecondary" ml={1}>
-                {shortName}
+                {shortName && shortName}
             </Typography>
         </div>
     );

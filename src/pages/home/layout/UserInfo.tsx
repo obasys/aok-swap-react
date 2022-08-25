@@ -27,6 +27,7 @@ interface Props {
 
 const UserInfo: FC<Props> = ({ className }) => {
     const token = useSelector((state: any) => state.login.token);
+
     const { data: profileData, isLoading, error } = useProfile({ auth: token });
 
     const mobile = useMediaQuery(({ breakpoints }: Theme) => breakpoints.down('sm'));

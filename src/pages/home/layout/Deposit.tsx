@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
     FormControl,
@@ -18,6 +18,8 @@ import { ContentCopyOutlined } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import { CurrencySelectItem } from '../components';
+import { useSelector } from 'react-redux';
+import useAddresses from '../../../api/UseAddresses';
 
 interface Props {
     className?: string;
@@ -26,9 +28,13 @@ interface Props {
 const Deposit: FC<Props> = ({ className }) => {
     const mobile = useMediaQuery(({ breakpoints }: Theme) => breakpoints.down('sm'));
 
-    const [currency, setCurrency] = React.useState('1');
+    const [currency, setCurrency] = useState('');
     const inputValue = 'f23hg2h3jh2j3gj2g32k3h2h3k2jh32';
     const { enqueueSnackbar } = useSnackbar();
+
+    const token = useSelector((state: any) => state.login.token);
+    const { data: currencyApi, isLoading, error } = useAddresses({ auth: token });
+    console.log(currencyApi);
 
     const handleChange = (event: SelectChangeEvent) => {
         setCurrency(event.target.value);
@@ -36,13 +42,30 @@ const Deposit: FC<Props> = ({ className }) => {
     const onCopy = () => {
         enqueueSnackbar('Address has been successfully copied to clipboard.', { variant: 'success' });
     };
-    const currencies = [
-        { id: 1, name: 'Bitcoin', shortName: 'BTC', icon: Logo },
-        { id: 2, name: 'ETH', shortName: 'BTC', icon: Logo },
-        { id: 3, name: 'Sugar', shortName: 'BTC', icon: Logo },
-        { id: 4, name: 'Tether', shortName: 'BTC', icon: Logo },
-    ];
+    // const currencies = [
+    //     { id: 1, name: 'Bitcoin', shortName: 'BTC', icon: Logo },
+    //     { id: 2, name: 'ETH', shortName: 'BTC', icon: Logo },
+    //     { id: 3, name: 'Sugar', shortName: 'BTC', icon: Logo },
+    //     { id: 4, name: 'Tether', shortName: 'BTC', icon: Logo },
+    // ];
+    const [keys, setKeys] = useState<string[]>([]);
+    const [values, setValues] = useState<string[]>([]);
+    useEffect(() => {
+        if (currencyApi) {
+            setKeys(Object.keys(currencyApi));
+            setValues(Object.values(currencyApi));
+            console.log(keys);
+            keys?.map((item) => {
+                console.log(item);
+            });
+        }
+    }, [currencyApi]);
 
+    useEffect(() => {
+        if (error) {
+            enqueueSnackbar(`UserInfo: ${error?.message}`, { variant: 'error' });
+        }
+    }, [error]);
     return (
         <div className={className}>
             <Typography variant="h4" mb={4}>
@@ -57,11 +80,16 @@ const Deposit: FC<Props> = ({ className }) => {
                         fullWidth
                         IconComponent={ExpandMoreRoundedIcon}
                     >
-                        {currencies.map((item) => (
-                            <MenuItem value={item.id} key={item.id}>
-                                <CurrencySelectItem {...item} />
-                            </MenuItem>
-                        ))}
+                        {!isLoading &&
+                            keys &&
+                            keys?.map((item) => (
+                                // <MenuItem value={item} key={item}>
+                                //     <CurrencySelectItem name={item} />
+                                // </MenuItem>
+                                <MenuItem key={item} value={item}>
+                                    {item}
+                                </MenuItem>
+                            ))}
                     </Select>
                 </FormControl>
                 <div className="qr-code">
