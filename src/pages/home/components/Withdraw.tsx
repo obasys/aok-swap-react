@@ -1,34 +1,36 @@
 import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import {
+    Button,
     Dialog,
     DialogTitle,
+    Divider,
     FormControl,
+    Grid,
     IconButton,
+    InputAdornment,
     MenuItem,
     Select,
     SelectChangeEvent,
-    Theme,
-    useMediaQuery,
-    Button,
     TextField,
-    InputAdornment,
-    Divider,
-    Grid,
+    Theme,
     Typography,
+    useMediaQuery,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { useForm, Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import NumberFormat from 'react-number-format';
 import { useSnackbar } from 'notistack';
 import { CurrencySelectItem } from './index';
 // import { isAddress as isAOKAddress } from '../../../services/address';
-
 import Logo from '../../../assets/logo.svg';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import CloseIcon from '@mui/icons-material/Close';
 import { IoWalletOutline } from 'react-icons/io5';
 import { Withdraw as WithdrawType } from '../../../types/Withdraw';
+import { useSelector } from 'react-redux';
+import { useMutation } from '@tanstack/react-query';
+import { withdraw } from '../../../api';
 
 interface Props {
     className?: string;
@@ -38,6 +40,7 @@ interface Props {
 
 const Withdraw: FC<Props> = ({ className, open, onClose }) => {
     const mobile = useMediaQuery(({ breakpoints }: Theme) => breakpoints.down('sm'));
+    const token = useSelector((state: any) => state.login.token);
 
     const {
         register,
@@ -48,33 +51,35 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
         formState: { errors: fieldsErrors },
     } = useForm<WithdrawType>();
 
-    const currencies = [
+    const withdrawCurrencies = [
         { id: 1, name: 'Bitcoin', shortName: 'BTC', icon: Logo },
         { id: 2, name: 'ETH', shortName: 'ETH', icon: Logo },
         { id: 3, name: 'Sugar', shortName: 'SGR', icon: Logo },
         { id: 4, name: 'Tether', shortName: 'TTH', icon: Logo },
+        { id: 5, name: 'Sugar', shortName: 'BSC', icon: Logo },
     ];
     const [currency, setCurrency] = useState('BTC');
-    const [isSending, setIsSending] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
     const watchAmount = watch('amount');
 
-    const handleSelectChange = (event: SelectChangeEvent) => {
-        setCurrency(event.target.value);
+    const { mutate, isLoading } = useMutation(withdraw, {
+        onSuccess: () => {
+            reset();
+            enqueueSnackbar('Withdraw success!', { variant: 'success' });
+        },
+        onError: (e) => {
+            // @ts-ignore
+            enqueueSnackbar(e, { variant: 'error' });
+        },
+    });
+
+    const onSubmit = (data: WithdrawType) => {
+        const formData = { amount: data.amount.replace(/,/g, ''), address: data.address, network: data.network };
+        mutate({ formData, token });
     };
 
-    const onSubmit = async (data: WithdrawType) => {
-        try {
-            alert(JSON.stringify(data));
-            reset();
-        } catch (e) {
-            if (e instanceof Error)
-                enqueueSnackbar(e.message, {
-                    variant: 'error',
-                });
-
-            setIsSending(false);
-        }
+    const handleSelectChange = (event: SelectChangeEvent) => {
+        setCurrency(event.target.value);
     };
 
     return (
@@ -100,7 +105,7 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
                                 fullWidth
                                 IconComponent={ExpandMoreRoundedIcon}
                             >
-                                {currencies.map((item) => (
+                                {withdrawCurrencies.map((item) => (
                                     <MenuItem value={item.shortName} key={item.id}>
                                         <CurrencySelectItem {...item} />
                                     </MenuItem>
@@ -149,7 +154,7 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
                                 className="form-field"
                                 label="Amount"
                                 placeholder="Enter the amount"
-                                isNumericString
+                                // isNumericString
                                 helperText={fieldsErrors.amount ? fieldsErrors.amount.message : undefined}
                                 error={Boolean(fieldsErrors.amount)}
                                 InputLabelProps={{ shrink: true }}
@@ -199,7 +204,7 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
                     </Grid>
                     <Grid item xs="auto" md="auto" sm="auto" justifyContent="flex-end">
                         <LoadingButton
-                            loading={isSending}
+                            loading={isLoading}
                             loadingPosition="start"
                             color="primary"
                             variant="contained"

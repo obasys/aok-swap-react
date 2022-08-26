@@ -13,10 +13,12 @@ import {
 import QRCode from 'react-qr-code';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Logo from '../../../assets/logo.svg';
 import { ContentCopyOutlined } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { CurrencySelectItem } from '../components';
 import { useSelector } from 'react-redux';
 import useAddresses from '../../../api/UseAddresses';
@@ -34,14 +36,15 @@ const Deposit: FC<Props> = ({ className }) => {
 
     const token = useSelector((state: any) => state.login.token);
     const { data: currencyApi, isLoading, error } = useAddresses({ auth: token });
-    console.log(currencyApi);
 
     const handleChange = (event: SelectChangeEvent) => {
         setCurrency(event.target.value);
     };
+
     const onCopy = () => {
         enqueueSnackbar('Address has been successfully copied to clipboard.', { variant: 'success' });
     };
+
     // const currencies = [
     //     { id: 1, name: 'Bitcoin', shortName: 'BTC', icon: Logo },
     //     { id: 2, name: 'ETH', shortName: 'BTC', icon: Logo },
@@ -50,14 +53,11 @@ const Deposit: FC<Props> = ({ className }) => {
     // ];
     const [keys, setKeys] = useState<string[]>([]);
     const [values, setValues] = useState<string[]>([]);
+
     useEffect(() => {
         if (currencyApi) {
             setKeys(Object.keys(currencyApi));
             setValues(Object.values(currencyApi));
-            console.log(keys);
-            keys?.map((item) => {
-                console.log(item);
-            });
         }
     }, [currencyApi]);
 
@@ -66,6 +66,7 @@ const Deposit: FC<Props> = ({ className }) => {
             enqueueSnackbar(`UserInfo: ${error?.message}`, { variant: 'error' });
         }
     }, [error]);
+
     return (
         <div className={className}>
             <Typography variant="h4" mb={4}>
