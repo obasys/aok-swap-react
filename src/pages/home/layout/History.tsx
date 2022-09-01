@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { FormControl, Grid, List, MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
 import styled from 'styled-components';
-import { HistoryItem } from '../components';
+import { HistoryItem, HistorySkeleton } from '../components';
 import coinIcon from '../../../assets/ABBC.svg';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 
@@ -17,24 +17,83 @@ type HistoryItemType = {
 interface Props {
     className?: string;
 }
-
-const History: FC<Props> = ({ className }) => {
-    const history: HistoryItemType = {
+const history: HistoryItemType[] = [
+    {
         type: 'received',
         hash: '2hh23h23h2h342j32jh3j23h2h3j2h3h2h34j2hj34h2j3h2',
         coin: 'BTC',
         amount: 214.242,
         date: 1656374400 * 1000,
         icon: coinIcon,
-    };
+    },
+    {
+        type: 'received',
+        hash: '2hh23h23h2h342j32jh3j23h2h3j2h3h2h34j2hj34h2j3h2',
+        coin: 'BTC',
+        amount: 214.242,
+        date: 1656374400 * 1000,
+        icon: coinIcon,
+    },
+    {
+        type: 'received',
+        hash: '2hh23h23h2h342j32jh3j23h2h3j2h3h2h34j2hj34h2j3h2',
+        coin: 'BTC',
+        amount: 214.242,
+        date: 1656374400 * 1000,
+        icon: coinIcon,
+    },
+    {
+        type: 'received',
+        hash: '2hh23h23h2h342j32jh3j23h2h3j2h3h2h34j2hj34h2j3h2',
+        coin: 'BTC',
+        amount: 214.242,
+        date: 1656374400 * 1000,
+        icon: coinIcon,
+    },
+    {
+        type: 'received',
+        hash: '2hh23h23h2h342j32jh3j23h2h3j2h3h2h34j2hj34h2j3h2',
+        coin: 'BTC',
+        amount: 214.242,
+        date: 1656374400 * 1000,
+        icon: coinIcon,
+    },
+    {
+        type: 'received',
+        hash: '2hh23h23h2h342j32jh3j23h2h3j2h3h2h34j2hj34h2j3h2',
+        coin: 'BTC',
+        amount: 214.242,
+        date: 1656374400 * 1000,
+        icon: coinIcon,
+    },
+    {
+        type: 'received',
+        hash: '2hh23h23h2h342j32jh3j23h2h3j2h3h2h34j2hj34h2j3h2',
+        coin: 'BTC',
+        amount: 214.242,
+        date: 1656374400 * 1000,
+        icon: coinIcon,
+    },
+    {
+        type: 'received',
+        hash: '2hh23h23h2h342j32jh3j23h2h3j2h3h2h34j2hj34h2j3h2',
+        coin: 'BTC',
+        amount: 214.242,
+        date: 1656374400 * 1000,
+        icon: coinIcon,
+    },
+];
 
-    const [filter, setFilter] = React.useState('10');
+const History: FC<Props> = ({ className }) => {
+    const [filter, setFilter] = useState('10');
 
     const handleChange = (event: SelectChangeEvent) => {
         setFilter(event.target.value as string);
     };
 
-    return (
+    const isLoading = false;
+
+    const component = (
         <div className={className}>
             <Grid item container alignItems="center" md={12} mb={3}>
                 <Grid item md xs>
@@ -64,14 +123,14 @@ const History: FC<Props> = ({ className }) => {
                 </Grid>
             </Grid>
             <List>
-                <HistoryItem {...history} />
-                <HistoryItem {...history} />
-                <HistoryItem {...history} />
-                <HistoryItem {...history} />
-                <HistoryItem {...history} />
+                {history.slice(0, 5).map((item, idx) => (
+                    <HistoryItem {...item} key={idx} />
+                ))}
             </List>
         </div>
     );
+
+    return isLoading ? <HistorySkeleton rows={5} /> : component;
 };
 
 export default styled(History)``;

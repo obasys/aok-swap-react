@@ -4,7 +4,7 @@ import { Avatar, Typography } from '@mui/material';
 
 interface Props {
     className?: string;
-    id?: number;
+    id?: string;
     name?: string;
     shortName?: string;
     icon?: string;

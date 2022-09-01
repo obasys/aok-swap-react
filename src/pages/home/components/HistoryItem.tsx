@@ -17,7 +17,7 @@ interface Props {
 const HistoryItem: FC<Props> = ({ className, hash, coin, date, amount, type, icon }) => {
     return (
         <Paper className={className} variant="outlined">
-            <ListItemButton>
+            <ListItemButton className="list-item">
                 <ListItemAvatar>
                     <Avatar>{type === 'sent' ? <IoArrowUpSharp /> : <IoArrowDownSharp />}</Avatar>
                 </ListItemAvatar>
@@ -41,4 +41,7 @@ const HistoryItem: FC<Props> = ({ className, hash, coin, date, amount, type, ico
 
 export default styled(HistoryItem)`
     margin-bottom: 8px;
+    .list-item {
+        border-radius: inherit;
+    }
 `;

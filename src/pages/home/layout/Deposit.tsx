@@ -19,7 +19,7 @@ import { ContentCopyOutlined } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { CurrencySelectItem } from '../components';
+import { CurrencySelectItem, DepositSkeleton } from '../components';
 import { useSelector } from 'react-redux';
 import useAddresses from '../../../api/UseAddresses';
 
@@ -27,39 +27,32 @@ interface Props {
     className?: string;
 }
 
+const currencies = [
+    { id: '1', name: 'Bitcoin', shortName: 'BTC', icon: Logo, address: 'KofAiUApZ6qV5Vw3cqN89bdaXGat3E9AwD' },
+    { id: '5', name: 'AOK', shortName: 'AOK', icon: Logo, address: '0x25009a9Eb7048f788793b50e641ceDdEd7AAB43f' },
+    { id: '2', name: 'ETH', shortName: 'BTC', icon: Logo, address: 'KofAiUApZ6qV5Vw3cqN89bdaXGat3E9AwD' },
+    { id: '3', name: 'Sugar', shortName: 'BTC', icon: Logo, address: '0x25009a9Eb7048f788793b50e641ceDdEd7AAB43f' },
+    { id: '4', name: 'Tether', shortName: 'BTC', icon: Logo, address: 'KofAiUApZ6qV5Vw3cqN89bdaXGat3E9AwD' },
+];
+
 const Deposit: FC<Props> = ({ className }) => {
     const mobile = useMediaQuery(({ breakpoints }: Theme) => breakpoints.down('sm'));
 
-    const [currency, setCurrency] = useState('');
-    const inputValue = 'f23hg2h3jh2j3gj2g32k3h2h3k2jh32';
+    const [currency, setCurrency] = useState('1');
+    const [address, setAddress] = useState(currencies.find((x) => x.id === currency)!.address);
     const { enqueueSnackbar } = useSnackbar();
 
     const token = useSelector((state: any) => state.login.token);
-    const { data: currencyApi, isLoading, error } = useAddresses({ auth: token });
+    const { isLoading, error } = useAddresses({ auth: token });
 
     const handleChange = (event: SelectChangeEvent) => {
         setCurrency(event.target.value);
+        setAddress(currencies.find((x) => x.id === currency)!.address);
     };
 
     const onCopy = () => {
         enqueueSnackbar('Address has been successfully copied to clipboard.', { variant: 'success' });
     };
-
-    // const currencies = [
-    //     { id: 1, name: 'Bitcoin', shortName: 'BTC', icon: Logo },
-    //     { id: 2, name: 'ETH', shortName: 'BTC', icon: Logo },
-    //     { id: 3, name: 'Sugar', shortName: 'BTC', icon: Logo },
-    //     { id: 4, name: 'Tether', shortName: 'BTC', icon: Logo },
-    // ];
-    const [keys, setKeys] = useState<string[]>([]);
-    const [values, setValues] = useState<string[]>([]);
-
-    useEffect(() => {
-        if (currencyApi) {
-            setKeys(Object.keys(currencyApi));
-            setValues(Object.values(currencyApi));
-        }
-    }, [currencyApi]);
 
     useEffect(() => {
         if (error) {
@@ -67,7 +60,7 @@ const Deposit: FC<Props> = ({ className }) => {
         }
     }, [error]);
 
-    return (
+    const component = (
         <div className={className}>
             <Typography variant="h4" mb={4}>
                 Deposit
@@ -82,26 +75,20 @@ const Deposit: FC<Props> = ({ className }) => {
                         IconComponent={ExpandMoreRoundedIcon}
                     >
                         {!isLoading &&
-                            keys &&
-                            keys?.map((item) => (
-                                // <MenuItem value={item} key={item}>
-                                //     <CurrencySelectItem name={item} />
-                                // </MenuItem>
-                                <MenuItem key={item} value={item}>
-                                    {item}
+                            currencies &&
+                            currencies?.map((item) => (
+                                <MenuItem value={item.id} key={item.id}>
+                                    <CurrencySelectItem {...item} />
                                 </MenuItem>
                             ))}
                     </Select>
                 </FormControl>
                 <div className="qr-code">
-                    <QRCode
-                        value="https://twitter.com/tarnovski_john/status/1544399487765979138"
-                        size={mobile ? 135 : 200}
-                    />
+                    <QRCode value={address} size={mobile ? 135 : 200} />
                 </div>
                 <Typography color="textSecondary" className="copy-txt" noWrap>
-                    {inputValue}
-                    <CopyToClipboard onCopy={onCopy} text={inputValue}>
+                    {address}
+                    <CopyToClipboard onCopy={onCopy} text={address}>
                         <IconButton size="small">
                             <ContentCopyOutlined className="icon-btn" />
                         </IconButton>
@@ -116,6 +103,8 @@ const Deposit: FC<Props> = ({ className }) => {
             </div>
         </div>
     );
+
+    return isLoading ? <DepositSkeleton /> : component;
 };
 
 export default styled(Deposit)`

@@ -38,6 +38,14 @@ interface Props {
     onClose: any;
 }
 
+const withdrawCurrencies = [
+    { id: '1', name: 'Bitcoin', shortName: 'BTC', icon: Logo, address: 'KofAiUApZ6qV5Vw3cqN89bdaXGat3E9AwD' },
+    { id: '5', name: 'AOK', shortName: 'AOK', icon: Logo, address: '0x25009a9Eb7048f788793b50e641ceDdEd7AAB43f' },
+    { id: '2', name: 'ETH', shortName: 'BTC', icon: Logo, address: 'KofAiUApZ6qV5Vw3cqN89bdaXGat3E9AwD' },
+    { id: '3', name: 'Sugar', shortName: 'BTC', icon: Logo, address: '0x25009a9Eb7048f788793b50e641ceDdEd7AAB43f' },
+    { id: '4', name: 'Tether', shortName: 'BTC', icon: Logo, address: 'KofAiUApZ6qV5Vw3cqN89bdaXGat3E9AwD' },
+];
+
 const Withdraw: FC<Props> = ({ className, open, onClose }) => {
     const mobile = useMediaQuery(({ breakpoints }: Theme) => breakpoints.down('sm'));
     const token = useSelector((state: any) => state.login.token);
@@ -51,14 +59,7 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
         formState: { errors: fieldsErrors },
     } = useForm<WithdrawType>();
 
-    const withdrawCurrencies = [
-        { id: 1, name: 'Bitcoin', shortName: 'BTC', icon: Logo },
-        { id: 2, name: 'ETH', shortName: 'ETH', icon: Logo },
-        { id: 3, name: 'Sugar', shortName: 'SGR', icon: Logo },
-        { id: 4, name: 'Tether', shortName: 'TTH', icon: Logo },
-        { id: 5, name: 'Sugar', shortName: 'BSC', icon: Logo },
-    ];
-    const [currency, setCurrency] = useState('BTC');
+    const [currency, setCurrency] = useState('1');
     const { enqueueSnackbar } = useSnackbar();
     const watchAmount = watch('amount');
 
@@ -106,7 +107,7 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
                                 IconComponent={ExpandMoreRoundedIcon}
                             >
                                 {withdrawCurrencies.map((item) => (
-                                    <MenuItem value={item.shortName} key={item.id}>
+                                    <MenuItem value={item.id} key={item.id}>
                                         <CurrencySelectItem {...item} />
                                     </MenuItem>
                                 ))}

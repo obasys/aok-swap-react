@@ -16,7 +16,7 @@ import {
 import Logo from '../../../assets/logo.svg';
 import { BiUpload } from 'react-icons/all';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
-import { BalanceSelectItem, Withdraw } from '../components';
+import { BalanceSelectItem, UserInfoSkeleton, Withdraw } from '../components';
 import useProfile from '../../../api/UseProfile';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
@@ -35,10 +35,10 @@ const UserInfo: FC<Props> = ({ className }) => {
     const { enqueueSnackbar } = useSnackbar();
 
     const fakeUserName = 'Oleh Smith';
-    const [cryptocurrency, setCryptocurrency] = useState('1');
+    const [currency, setCurrency] = useState('1');
 
     const handleSelectChange = (event: SelectChangeEvent) => {
-        setCryptocurrency(event.target.value);
+        setCurrency(event.target.value);
     };
 
     const currencies = [
@@ -54,7 +54,7 @@ const UserInfo: FC<Props> = ({ className }) => {
         }
     }, [error]);
 
-    return (
+    const component = (
         <Paper className={className} variant="outlined">
             <Grid container alignItems="center" justifyContent="space-between" columnSpacing={2} pb={mobile ? 4 : 8}>
                 <Grid item container md="auto" xs={8} alignItems="center" direction="row">
@@ -65,7 +65,7 @@ const UserInfo: FC<Props> = ({ className }) => {
                 </Grid>
                 <Grid item md="auto" xs={4} flexDirection="row">
                     <Typography color="textSecondary" noWrap>
-                        {!isLoading && profileData && profileData.address}
+                        {profileData ? profileData.address : ''}
                     </Typography>
                 </Grid>
             </Grid>
@@ -73,7 +73,7 @@ const UserInfo: FC<Props> = ({ className }) => {
                 <Grid item sm="auto" xs={12} pb={mobile ? 4 : 0}>
                     <FormControl fullWidth>
                         <Select
-                            value={cryptocurrency}
+                            value={currency}
                             variant="standard"
                             onChange={handleSelectChange}
                             displayEmpty
@@ -103,6 +103,8 @@ const UserInfo: FC<Props> = ({ className }) => {
             <Withdraw open={openDialog} onClose={() => setOpenDialog(false)} />
         </Paper>
     );
+
+    return isLoading ? <UserInfoSkeleton /> : component;
 };
 
 export default styled(UserInfo)`
