@@ -1,17 +1,13 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { Avatar, Typography } from '@mui/material';
+import { Address } from '../../../types/Address';
 
-interface Props {
+interface Props extends Address {
     className?: string;
-    id?: string;
-    name?: string;
-    shortName?: string;
-    icon?: string;
-    balance?: number;
 }
 
-const CurrencySelectItem: FC<Props> = ({ className, name, shortName, icon }) => {
+const CurrencySelectItem: FC<Props> = ({ className, name, ticker, icon }) => {
     return (
         <div className={className}>
             <Avatar>
@@ -21,7 +17,7 @@ const CurrencySelectItem: FC<Props> = ({ className, name, shortName, icon }) => 
                 {name && name}
             </Typography>
             <Typography variant="subtitle1" color="textSecondary" ml={1}>
-                {shortName && shortName}
+                {ticker && ticker}
             </Typography>
         </div>
     );

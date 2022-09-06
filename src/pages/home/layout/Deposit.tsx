@@ -13,41 +13,28 @@ import {
 import QRCode from 'react-qr-code';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import Logo from '../../../assets/logo.svg';
 import { ContentCopyOutlined } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { CurrencySelectItem, DepositSkeleton } from '../components';
 import { useSelector } from 'react-redux';
 import useAddresses from '../../../api/UseAddresses';
+import { Address } from '../../../types/Address';
 
 interface Props {
     className?: string;
 }
 
-const currencies = [
-    { id: '1', name: 'Bitcoin', shortName: 'BTC', icon: Logo, address: 'KofAiUApZ6qV5Vw3cqN89bdaXGat3E9AwD' },
-    { id: '5', name: 'AOK', shortName: 'AOK', icon: Logo, address: '0x25009a9Eb7048f788793b50e641ceDdEd7AAB43f' },
-    { id: '2', name: 'ETH', shortName: 'BTC', icon: Logo, address: 'KofAiUApZ6qV5Vw3cqN89bdaXGat3E9AwD' },
-    { id: '3', name: 'Sugar', shortName: 'BTC', icon: Logo, address: '0x25009a9Eb7048f788793b50e641ceDdEd7AAB43f' },
-    { id: '4', name: 'Tether', shortName: 'BTC', icon: Logo, address: 'KofAiUApZ6qV5Vw3cqN89bdaXGat3E9AwD' },
-];
-
 const Deposit: FC<Props> = ({ className }) => {
     const mobile = useMediaQuery(({ breakpoints }: Theme) => breakpoints.down('sm'));
+    const token = useSelector((state: any) => state.login.token);
+    const { data: addresses, isLoading, error } = useAddresses({ auth: token });
 
-    const [currency, setCurrency] = useState('1');
-    const [address, setAddress] = useState(currencies.find((x) => x.id === currency)!.address);
+    const [currency, setCurrency] = useState<Address>();
     const { enqueueSnackbar } = useSnackbar();
 
-    const token = useSelector((state: any) => state.login.token);
-    const { isLoading, error } = useAddresses({ auth: token });
-
     const handleChange = (event: SelectChangeEvent) => {
-        setCurrency(event.target.value);
-        setAddress(currencies.find((x) => x.id === currency)!.address);
+        setCurrency(addresses?.find((x) => x.id === event.target.value));
     };
 
     const onCopy = () => {
@@ -60,6 +47,12 @@ const Deposit: FC<Props> = ({ className }) => {
         }
     }, [error]);
 
+    useEffect(() => {
+        if (!isLoading) {
+            setCurrency(addresses && addresses[0]);
+        }
+    }, [isLoading]);
+
     const component = (
         <div className={className}>
             <Typography variant="h4" mb={4}>
@@ -68,15 +61,16 @@ const Deposit: FC<Props> = ({ className }) => {
             <div className="deposit-box">
                 <FormControl fullWidth>
                     <Select
-                        value={currency}
+                        value={currency?.id}
+                        defaultValue="1"
                         onChange={handleChange}
                         displayEmpty
                         fullWidth
                         IconComponent={ExpandMoreRoundedIcon}
                     >
                         {!isLoading &&
-                            currencies &&
-                            currencies?.map((item) => (
+                            addresses &&
+                            addresses.map((item) => (
                                 <MenuItem value={item.id} key={item.id}>
                                     <CurrencySelectItem {...item} />
                                 </MenuItem>
@@ -84,11 +78,11 @@ const Deposit: FC<Props> = ({ className }) => {
                     </Select>
                 </FormControl>
                 <div className="qr-code">
-                    <QRCode value={address} size={mobile ? 135 : 200} />
+                    <QRCode value={currency?.address ? currency.address : ''} size={mobile ? 135 : 200} />
                 </div>
                 <Typography color="textSecondary" className="copy-txt" noWrap>
-                    {address}
-                    <CopyToClipboard onCopy={onCopy} text={address}>
+                    {currency?.address}
+                    <CopyToClipboard onCopy={onCopy} text={currency?.address!}>
                         <IconButton size="small">
                             <ContentCopyOutlined className="icon-btn" />
                         </IconButton>

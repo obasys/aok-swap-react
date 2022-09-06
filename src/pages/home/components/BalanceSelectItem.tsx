@@ -2,13 +2,10 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import { Typography } from '@mui/material';
 import NumberFormat from 'react-number-format';
+import { Address } from '../../../types/Address';
 
-interface Props {
+interface Props extends Address {
     className?: string;
-    id?: number;
-    name?: string;
-    icon?: string;
-    balance?: number;
 }
 
 const BalanceSelectItem: FC<Props> = ({ className, name, icon, balance }) => {

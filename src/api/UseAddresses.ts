@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
+import { Address } from '../types/Address';
 
 type Params = {
     auth: string;
@@ -10,7 +11,7 @@ async function fetch(params: Params) {
         const { data } = await axios.get(`${axios.defaults.baseURL}/profile/addresses`, {
             headers: { Auth: params.auth },
         });
-        return data;
+        return data.addresses;
     } catch (e) {
         console.error(e);
         throw e;
@@ -18,5 +19,5 @@ async function fetch(params: Params) {
 }
 
 export default function (params: Params, options?: Record<string, any>) {
-    return useQuery<any, Error>(['addresses', params], () => fetch(params), options);
+    return useQuery<Address[], Error>(['addresses', params], () => fetch(params), options);
 }
