@@ -4,7 +4,7 @@ import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
-import { Home } from '../pages';
+import { Home, Login } from '../pages';
 import { GlobalStyle, Navigation, theme } from './index';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -22,6 +22,7 @@ const queryClient = new QueryClient({
 const App = () => {
     const token = useSelector((state: any) => state.login.token);
     const dispatch = useDispatch();
+
     useEffect(() => {
         if (localStorage.auth) {
             dispatch(addSecret(localStorage.auth));
@@ -35,9 +36,10 @@ const App = () => {
                     <ThemeProvider theme={theme}>
                         <CssBaseline />
                         <GlobalStyle />
-                        <Navigation />
+                        {/*<Navigation />*/}
                         <Switch>
                             <Route path="/" exact component={Home} />
+                            <Route path="/login" exact component={Login} />
                             <Redirect to="/" />
                         </Switch>
                     </ThemeProvider>
