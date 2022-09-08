@@ -1,7 +1,7 @@
 import login from './login';
 import withdraw from './withdraw';
-import UseProfile from './UseProfile';
-import UseAddresses from './UseAddresses';
-import UseBalance from './UseBalance';
+import useProfile from './UseProfile';
+import useAddresses from './UseAddresses';
+import useBalance from './UseBalance';
 
-export { login, withdraw, UseProfile, UseBalance, UseAddresses };
+export { login, withdraw, useProfile, useBalance, useAddresses };

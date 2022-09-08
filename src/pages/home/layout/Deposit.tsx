@@ -1,15 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import {
-    FormControl,
-    IconButton,
-    MenuItem,
-    Select,
-    SelectChangeEvent,
-    Theme,
-    Typography,
-    useMediaQuery,
-} from '@mui/material';
+import { IconButton, MenuItem, Select, SelectChangeEvent, Theme, Typography, useMediaQuery } from '@mui/material';
 import QRCode from 'react-qr-code';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -18,7 +9,7 @@ import { useSnackbar } from 'notistack';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import { CurrencySelectItem, DepositSkeleton } from '../components';
 import { useSelector } from 'react-redux';
-import useAddresses from '../../../api/UseAddresses';
+import { useAddresses } from '../../../api';
 import { Address } from '../../../types/Address';
 
 interface Props {
@@ -43,7 +34,7 @@ const Deposit: FC<Props> = ({ className }) => {
 
     useEffect(() => {
         if (error) {
-            enqueueSnackbar(`UserInfo: ${error?.message}`, { variant: 'error' });
+            enqueueSnackbar(`Deposit: ${error?.message}`, { variant: 'error' });
         }
     }, [error]);
 
@@ -59,24 +50,21 @@ const Deposit: FC<Props> = ({ className }) => {
                 Deposit
             </Typography>
             <div className="deposit-box">
-                <FormControl fullWidth>
-                    <Select
-                        value={currency?.id}
-                        defaultValue="1"
-                        onChange={handleChange}
-                        displayEmpty
-                        fullWidth
-                        IconComponent={ExpandMoreRoundedIcon}
-                    >
-                        {!isLoading &&
-                            addresses &&
-                            addresses.map((item) => (
-                                <MenuItem value={item.id} key={item.id}>
-                                    <CurrencySelectItem {...item} />
-                                </MenuItem>
-                            ))}
-                    </Select>
-                </FormControl>
+                <Select
+                    value={currency?.id || ''}
+                    defaultValue="1"
+                    onChange={handleChange}
+                    fullWidth
+                    IconComponent={ExpandMoreRoundedIcon}
+                >
+                    {!isLoading &&
+                        addresses &&
+                        addresses.map((item) => (
+                            <MenuItem value={item.id} key={item.id}>
+                                <CurrencySelectItem {...item} />
+                            </MenuItem>
+                        ))}
+                </Select>
                 <div className="qr-code">
                     <QRCode value={currency?.address ? currency.address : ''} size={mobile ? 135 : 200} />
                 </div>

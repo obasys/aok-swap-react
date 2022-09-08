@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
     Button,
@@ -30,7 +30,8 @@ import { IoWalletOutline } from 'react-icons/io5';
 import { Withdraw as WithdrawType } from '../../../types/Withdraw';
 import { useSelector } from 'react-redux';
 import { useMutation } from '@tanstack/react-query';
-import { withdraw } from '../../../api';
+import { useAddresses, withdraw } from '../../../api';
+import { Address } from '../../../types/Address';
 
 interface Props {
     className?: string;
@@ -38,17 +39,10 @@ interface Props {
     onClose: any;
 }
 
-const withdrawCurrencies = [
-    { id: '1', name: 'Bitcoin', shortName: 'BTC', icon: Logo, address: 'KofAiUApZ6qV5Vw3cqN89bdaXGat3E9AwD' },
-    { id: '5', name: 'AOK', shortName: 'AOK', icon: Logo, address: '0x25009a9Eb7048f788793b50e641ceDdEd7AAB43f' },
-    { id: '2', name: 'ETH', shortName: 'BTC', icon: Logo, address: 'KofAiUApZ6qV5Vw3cqN89bdaXGat3E9AwD' },
-    { id: '3', name: 'Sugar', shortName: 'BTC', icon: Logo, address: '0x25009a9Eb7048f788793b50e641ceDdEd7AAB43f' },
-    { id: '4', name: 'Tether', shortName: 'BTC', icon: Logo, address: 'KofAiUApZ6qV5Vw3cqN89bdaXGat3E9AwD' },
-];
-
 const Withdraw: FC<Props> = ({ className, open, onClose }) => {
     const mobile = useMediaQuery(({ breakpoints }: Theme) => breakpoints.down('sm'));
     const token = useSelector((state: any) => state.login.token);
+    const { data: addresses, isLoading: isAddressesLoading, error } = useAddresses({ auth: token });
 
     const {
         register,
@@ -59,7 +53,9 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
         formState: { errors: fieldsErrors },
     } = useForm<WithdrawType>();
 
-    const [currency, setCurrency] = useState('1');
+    // const [currency, setCurrency] = useState('1');
+    const [currency, setCurrency] = useState<Address>();
+
     const { enqueueSnackbar } = useSnackbar();
     const watchAmount = watch('amount');
 
@@ -80,8 +76,20 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
     };
 
     const handleSelectChange = (event: SelectChangeEvent) => {
-        setCurrency(event.target.value);
+        setCurrency(addresses?.find((x) => x.id === event.target.value));
     };
+
+    useEffect(() => {
+        if (!isAddressesLoading) {
+            setCurrency(addresses && addresses[0]);
+        }
+    }, [isAddressesLoading]);
+
+    useEffect(() => {
+        if (error) {
+            enqueueSnackbar(`Withdraw: ${error?.message}`, { variant: 'error' });
+        }
+    }, [error]);
 
     return (
         <Dialog open={open} onClose={onClose} fullScreen={mobile} fullWidth maxWidth="sm" className={className}>
@@ -100,17 +108,19 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
                                 {...field}
                                 {...register('network')}
                                 className="form-field"
-                                value={currency}
+                                value={currency?.id}
                                 onChange={handleSelectChange}
-                                displayEmpty
+                                defaultValue="1"
                                 fullWidth
                                 IconComponent={ExpandMoreRoundedIcon}
                             >
-                                {withdrawCurrencies.map((item) => (
-                                    <MenuItem value={item.id} key={item.id}>
-                                        <CurrencySelectItem {...item} />
-                                    </MenuItem>
-                                ))}
+                                {!isAddressesLoading &&
+                                    addresses &&
+                                    addresses.map((item) => (
+                                        <MenuItem value={item.id} key={item.id}>
+                                            <CurrencySelectItem {...item} />
+                                        </MenuItem>
+                                    ))}
                             </Select>
                         )}
                         control={control}
@@ -162,7 +172,7 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
                                 InputProps={{
                                     endAdornment: (
                                         <>
-                                            <InputAdornment position="end">{currency}</InputAdornment>
+                                            <InputAdornment position="end">{currency?.ticker}</InputAdornment>
                                             <InputAdornment position="end">
                                                 <Button sx={{ minWidth: 0 }} size="small">
                                                     Max
@@ -199,7 +209,7 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
                                 />
                             </Typography>
                             <Typography variant="h6" color="primary" className="total-send-currency" fontWeight="bold">
-                                {currency}
+                                {currency?.ticker}
                             </Typography>
                         </div>
                     </Grid>

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import {
     Avatar,
     Button,
-    FormControl,
     Grid,
     MenuItem,
     Paper,
@@ -53,7 +52,7 @@ const UserInfo: FC<Props> = ({ className }) => {
             enqueueSnackbar(`UserInfo: ${error?.message}`, { variant: 'error' });
         }
     }, [error]);
-
+    //TODO: fix BalanceSelect
     const component = (
         <Paper className={className} variant="outlined">
             <Grid container alignItems="center" justifyContent="space-between" columnSpacing={2} pb={mobile ? 4 : 8}>
@@ -71,22 +70,20 @@ const UserInfo: FC<Props> = ({ className }) => {
             </Grid>
             <Grid container alignItems="center" justifyContent="space-between" columnSpacing={2}>
                 <Grid item sm="auto" xs={12} pb={mobile ? 4 : 0}>
-                    <FormControl fullWidth>
-                        <Select
-                            value={currency}
-                            variant="standard"
-                            onChange={handleSelectChange}
-                            displayEmpty
-                            disableUnderline
-                            IconComponent={ExpandMoreRoundedIcon}
-                        >
-                            {currencies.map((item) => (
-                                <MenuItem value={item.id} key={item.id}>
-                                    <BalanceSelectItem {...item} />
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                    <Select
+                        value={currency || ''}
+                        variant="standard"
+                        onChange={handleSelectChange}
+                        // displayEmpty
+                        disableUnderline
+                        IconComponent={ExpandMoreRoundedIcon}
+                    >
+                        {currencies.map((item) => (
+                            <MenuItem value={item.id} key={item.id}>
+                                <BalanceSelectItem {...item} />
+                            </MenuItem>
+                        ))}
+                    </Select>
                 </Grid>
                 <Grid item md="auto">
                     <Button
