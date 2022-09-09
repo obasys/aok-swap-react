@@ -1,17 +1,13 @@
 import React, { FC, useState } from 'react';
 import { AppBar, Button, Container, IconButton, Link, Theme, Toolbar, Typography, useMediaQuery } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Logo from '../assets/logos/logo-green.svg';
 import { MobileDrawer } from './index';
-import { useMutation } from '@tanstack/react-query';
-import { login } from '../api';
-import { useDispatch, useSelector } from 'react-redux';
-import { addSecret, resetSecret } from '../redux/reducers/login';
-import { LoadingButton } from '@mui/lab';
-import { useSnackbar } from 'notistack';
+import { useDispatch } from 'react-redux';
+import { resetSecret } from '../redux/reducers/login';
 
 interface Props {
     className?: string;
@@ -19,36 +15,15 @@ interface Props {
 
 const Navigation: FC<Props> = ({ className }) => {
     const mobile = useMediaQuery(({ breakpoints }: Theme) => breakpoints.down('sm'));
+    const history = useHistory();
 
     const [isDrawerOpened, setIsDrawerOpened] = useState(false);
     const dispatch = useDispatch();
-    const { enqueueSnackbar } = useSnackbar();
-    const token = useSelector((state: any) => state.login.token);
-
-    const { mutate, isLoading } = useMutation(login, {
-        onSuccess: (data) => {
-            // history.push('/');
-            dispatch(addSecret(data.token));
-            localStorage.setItem('auth', data.token);
-            enqueueSnackbar('Login success!', { variant: 'success' });
-            console.log(data);
-        },
-        onError: (e) => {
-            alert(e);
-        },
-    });
-
-    const fakeLogin = () => {
-        mutate({
-            signature: 'signature2',
-            message: 'message2',
-            address: 'aсcount2',
-        });
-    };
 
     const logOut = () => {
         dispatch(resetSecret());
         delete localStorage.auth;
+        history.push('/login');
     };
 
     const logo = (
@@ -85,25 +60,11 @@ const Navigation: FC<Props> = ({ className }) => {
                             Explorer
                         </Typography>
                     </Button>
-                    {token ? (
-                        <Button onClick={logOut} className="link" startIcon={<LogoutIcon />} variant="outlined">
-                            <Typography textTransform="none" variant="body1">
-                                Logout
-                            </Typography>
-                        </Button>
-                    ) : (
-                        <LoadingButton
-                            loading={isLoading}
-                            className="link"
-                            variant="outlined"
-                            startIcon={<LogoutIcon />}
-                            onClick={fakeLogin}
-                        >
-                            <Typography textTransform="none" variant="body1">
-                                Login
-                            </Typography>
-                        </LoadingButton>
-                    )}
+                    <Button onClick={logOut} className="link" startIcon={<LogoutIcon />} variant="outlined">
+                        <Typography textTransform="none" variant="body1">
+                            Logout
+                        </Typography>
+                    </Button>
                 </div>
             </div>
         </Container>

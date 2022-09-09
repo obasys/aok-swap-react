@@ -22,8 +22,6 @@ import { Controller, useForm } from 'react-hook-form';
 import NumberFormat from 'react-number-format';
 import { useSnackbar } from 'notistack';
 import { CurrencySelectItem } from './index';
-// import { isAddress as isAOKAddress } from '../../../services/address';
-import Logo from '../../../assets/logo.svg';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import CloseIcon from '@mui/icons-material/Close';
 import { IoWalletOutline } from 'react-icons/io5';

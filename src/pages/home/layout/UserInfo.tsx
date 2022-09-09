@@ -41,10 +41,10 @@ const UserInfo: FC<Props> = ({ className }) => {
     };
 
     const currencies = [
-        { id: 1, name: 'BTC', icon: Logo, balance: 92292929292 },
-        { id: 2, name: 'ETH', icon: Logo, balance: 92292929292 },
-        { id: 3, name: 'Sugar', icon: Logo, balance: 92292929292 },
-        { id: 4, name: 'Tether', icon: Logo, balance: 92292929292 },
+        { id: '1', name: 'BTC', icon: Logo, balance: 92292929292 },
+        { id: '2', name: 'ETH', icon: Logo, balance: 92292929292 },
+        { id: '3', name: 'Sugar', icon: Logo, balance: 92292929292 },
+        { id: '4', name: 'Tether', icon: Logo, balance: 92292929292 },
     ];
 
     useEffect(() => {
@@ -52,7 +52,7 @@ const UserInfo: FC<Props> = ({ className }) => {
             enqueueSnackbar(`UserInfo: ${error?.message}`, { variant: 'error' });
         }
     }, [error]);
-    //TODO: fix BalanceSelect
+
     const component = (
         <Paper className={className} variant="outlined">
             <Grid container alignItems="center" justifyContent="space-between" columnSpacing={2} pb={mobile ? 4 : 8}>

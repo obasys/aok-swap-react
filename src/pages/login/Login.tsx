@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import { Grid, Theme, useMediaQuery } from '@mui/material';
 import mask from '../../assets/back/mask.png';
-import { Title, LoginForm } from './layout';
+import { LoginForm, Title } from './layout';
 
 interface Props {
     className?: string;
@@ -33,6 +33,5 @@ export default styled(Login)`
     .green-part {
         background: ${({ theme }) => theme.palette.primary.main} url(${mask}) repeat-y left;
         height: 100vh;
-        //background: url(${mask}) repeat-y left;
     }
 `;

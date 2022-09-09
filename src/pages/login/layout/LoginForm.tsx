@@ -1,16 +1,134 @@
-import React, { FC } from 'react';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Button, Container, Theme, Typography, useMediaQuery } from '@mui/material';
-import logo from '../../../assets/logos/logo-white.svg';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { ButtonBase, Container, Skeleton, Theme, Typography, useMediaQuery } from '@mui/material';
+import logo from '../../../assets/logos/logo-green.svg';
 import QRCode from 'react-qr-code';
 import LoginIcon from '@mui/icons-material/Login';
+import { LoadingButton } from '@mui/lab';
+import { useDispatch } from 'react-redux';
+import { useSnackbar } from 'notistack';
+import { useMutation } from '@tanstack/react-query';
+import { login } from '../../../api';
+import { addSecret } from '../../../redux/reducers/login';
+import { useHistory } from 'react-router-dom';
+// import axios, { AxiosResponse } from 'axios';
+// import { io, Socket } from 'socket.io-client';
+// import * as bitcoinMessage from 'bitcoinjs-message';
 
 interface Props {
     className?: string;
 }
 
+// const API_URL = 'https://api.seirenwar.com/v1';
+// const CALLBACK_URL = 'https://callback.seirenwar.com';
+// const PREFIX = '\x14AOK Signed Message:\n';
+//
+// const uuid4 = () => {
+//     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+//         const r = (Math.random() * 16) | 0,
+//             v = c == 'x' ? r : (r & 0x3) | 0x8;
+//         return v.toString(16);
+//     });
+// };
+
 const LoginForm: FC<Props> = ({ className }) => {
     const mobile = useMediaQuery(({ breakpoints }: Theme) => breakpoints.down('sm'));
+    const dispatch = useDispatch();
+    const { enqueueSnackbar } = useSnackbar();
+    const history = useHistory();
+
+    const { mutate, isLoading } = useMutation(login, {
+        onSuccess: (data) => {
+            history.push('/');
+            dispatch(addSecret(data.token));
+            localStorage.setItem('auth', data.token);
+            enqueueSnackbar('Login success!', { variant: 'success' });
+            console.log(data);
+        },
+        onError: (e) => {
+            alert(e);
+        },
+    });
+
+    const fakeLogin = () => {
+        mutate({
+            signature: 'signature2',
+            message: 'message2',
+            address: 'aсcount2',
+        });
+    };
+
+    // //
+    // const socket = useRef<Socket>(null);
+    // const [session] = useState(uuid4());
+    // const [message, setMessage] = useState('');
+    // const [QRCodeData, setQRCodeData] = useState<string>();
+    // const [socketData, setSocketData] = useState<{ address: string; signature: string }>();
+    //
+    // const onSocketCallback = useCallback(({ address, signature }) => {
+    //     setSocketData({
+    //         address,
+    //         signature,
+    //     });
+    // }, []);
+    //
+    // const getNewQRCodeData = () => {
+    //     return `aok://sign?callback=${CALLBACK_URL}/call/${session}&message=${message}`;
+    // };
+    //
+    // const getServerInfoFromAPI = async () => {
+    //     try {
+    //         const {
+    //             data: {
+    //                 data: { time, prefix },
+    //             },
+    //         }: AxiosResponse<{ data: { time: string; prefix: string } }> = await axios.get(`${API_URL}/system/time`);
+    //
+    //         setMessage(`${prefix}/${time}`);
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    // };
+    //
+    // useEffect(() => {
+    //     if (message) {
+    //         setQRCodeData(getNewQRCodeData());
+    //     }
+    // }, [message]);
+    //
+    // useEffect(() => {
+    //     if (socketData) {
+    //         if (bitcoinMessage.verify(message!, socketData.address, socketData.signature, PREFIX)) {
+    //             login({
+    //                 address: socketData.address,
+    //                 message: message!,
+    //                 signature: socketData.signature,
+    //             });
+    //
+    //             socket.current!.off(session, onSocketCallback);
+    //         }
+    //     }
+    // }, [socketData]);
+    //
+    // useEffect(() => {
+    //     // @ts-ignore
+    //     socket.current = io(CALLBACK_URL, {
+    //         transports: ['websocket'],
+    //         upgrade: false,
+    //     });
+    //     socket.current.emit('callback', session);
+    //     socket.current.on(session, onSocketCallback);
+    //
+    //     getServerInfoFromAPI();
+    //
+    //     return () => {
+    //         // @ts-ignore
+    //         socket.current.off(session, onSocketCallback);
+    //     };
+    // }, []);
+    // //
 
     return (
         <Container className={className} maxWidth="xs">
@@ -25,10 +143,28 @@ const LoginForm: FC<Props> = ({ className }) => {
             </ol>
             <div className="qr-code">
                 <QRCode value={'ssoremgo3gpojn3[gb34g3ss'} size={mobile ? 135 : 170} />
+                {/*{QRCodeData ? (*/}
+                {/*    <ButtonBase href={QRCodeData} target="_blank">*/}
+                {/*        <QRCode size={174} value={QRCodeData} bgColor="white" className="qr-code" />*/}
+                {/*    </ButtonBase>*/}
+                {/*) : (*/}
+                {/*    <div className="qr-code-skeleton">*/}
+                {/*        <Skeleton width="100%" height="100%" variant="rectangular" />*/}
+                {/*    </div>*/}
+                {/*)}*/}
             </div>
-            <Button fullWidth={!mobile} variant="contained" className="login-btn" startIcon={<LoginIcon />}>
-                I want to log in or register.
-            </Button>
+            <LoadingButton
+                loading={isLoading}
+                fullWidth={!mobile}
+                className="link"
+                variant="contained"
+                startIcon={<LoginIcon />}
+                onClick={fakeLogin}
+            >
+                <Typography textTransform="none" variant="body1">
+                    I want to log in or register.
+                </Typography>
+            </LoadingButton>
         </Container>
     );
 };
