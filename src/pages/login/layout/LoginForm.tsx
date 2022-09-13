@@ -21,10 +21,13 @@ interface Props {
     className?: string;
 }
 
-const API_URL = 'https://bridge.codepillow.io';
-const CALLBACK_URL = 'https://callback.bridge.aok.network/';
+// const API_URL = 'https://bridge.codepillow.io';
+// time for Bridge is on /auth/time/
+// const CALLBACK_URL = 'https://callback.aok.network/';
 const PREFIX = '\x14AOK Signed Message:\n';
-// const PREFIX = 'Bridge';
+
+const API_URL = 'https://api.seirenwar.com/v1';
+const CALLBACK_URL = 'https://callback.seirenwar.com';
 
 const uuid4 = () => {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -68,7 +71,7 @@ const LoginForm: FC<Props> = ({ className }) => {
     const [QRCodeData, setQRCodeData] = useState<string>();
     const [socketData, setSocketData] = useState<{ address: string; signature: string }>();
 
-    const onSocketCallback = useCallback(({ address, signature }) => {
+    const onSocketCallback = useCallback(({ address, signature }: { address: string; signature: string }) => {
         setSocketData({
             address,
             signature,
@@ -85,11 +88,9 @@ const LoginForm: FC<Props> = ({ className }) => {
                 data: {
                     data: { time, prefix },
                 },
-            }: AxiosResponse<{ data: { time: string; prefix: string } }> = await axios.get(
-                'https://api.seirenwar.com/v1/system/time',
-            );
-            // }: AxiosResponse<{ data: { time: string; prefix: string } }> = await axios.get(`${API_URL}/system/time`);
+            }: AxiosResponse<{ data: { time: string; prefix: string } }> = await axios.get(`${API_URL}/system/time`);
             setMessage(`${prefix}/${time}`);
+            console.log(`${prefix}/${time}`);
         } catch (e) {
             console.error(e);
         }
@@ -103,19 +104,29 @@ const LoginForm: FC<Props> = ({ className }) => {
     console.log(socketData);
     // console.log(bitcoinMessage);
     useEffect(() => {
-        // if (socketData) {
-        //     console.log(socketData);
-        //     console.log(bitcoinMessage);
-        //     if (bitcoinMessage.verify(message!, socketData.address, socketData.signature, PREFIX)) {
-        //         login({
-        //             address: socketData.address,
-        //             message: message!,
-        //             signature: socketData.signature,
-        //         });
-        //
-        //         socket.current!.off(session, onSocketCallback);
-        //     }
-        // }
+        if (socketData) {
+            console.log(socketData);
+            // console.log(bitcoinMessage);
+            // if (bitcoinMessage.verify(message!, socketData.address, socketData.signature, PREFIX)) {
+            // mutate({
+            //     address: socketData.address,
+            //     message: message!,
+            //     signature: socketData.signature,
+            // });
+            mutate({
+                signature: 'signature2',
+                message: 'message2',
+                address: 'aсcount2',
+            });
+            console.log({
+                address: socketData.address,
+                message: message!,
+                signature: socketData.signature,
+            });
+
+            socket.current!.off(session, onSocketCallback);
+            // }
+        }
     }, [socketData]);
 
     useEffect(() => {
