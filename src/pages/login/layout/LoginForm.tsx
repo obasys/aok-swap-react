@@ -21,13 +21,13 @@ interface Props {
     className?: string;
 }
 
-// const API_URL = 'https://bridge.codepillow.io';
+const API_URL = 'https://bridge.codepillow.io';
 // time for Bridge is on /auth/time/
-// const CALLBACK_URL = 'https://callback.aok.network/';
+const CALLBACK_URL = 'https://callback.aok.network';
 const PREFIX = '\x14AOK Signed Message:\n';
 
-const API_URL = 'https://api.seirenwar.com/v1';
-const CALLBACK_URL = 'https://callback.seirenwar.com';
+// const API_URL = 'https://api.seirenwar.com/v1';
+// const CALLBACK_URL = 'https://callback.seirenwar.com';
 
 const uuid4 = () => {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -88,7 +88,7 @@ const LoginForm: FC<Props> = ({ className }) => {
                 data: {
                     data: { time, prefix },
                 },
-            }: AxiosResponse<{ data: { time: string; prefix: string } }> = await axios.get(`${API_URL}/system/time`);
+            }: AxiosResponse<{ data: { time: string; prefix: string } }> = await axios.get(`${API_URL}/auth/time`);
             setMessage(`${prefix}/${time}`);
             console.log(`${prefix}/${time}`);
         } catch (e) {
