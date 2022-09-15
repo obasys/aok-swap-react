@@ -17,8 +17,10 @@ import { BiUpload } from 'react-icons/all';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import { BalanceSelectItem, UserInfoSkeleton, Withdraw } from '../components';
 import useProfile from '../../../api/UseProfile';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
+import { resetSecret } from '../../../redux/reducers/login';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
     className?: string;
@@ -26,8 +28,28 @@ interface Props {
 
 const UserInfo: FC<Props> = ({ className }) => {
     const token = useSelector((state: any) => state.login.token);
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const [refetchInterval, setRefetchInterval] = React.useState(10000);
 
-    const { data: profileData, isLoading, error } = useProfile({ auth: token });
+    const {
+        data: profileData,
+        isLoading,
+        error,
+    } = useProfile(
+        { auth: token },
+        {
+            refetchInterval,
+            retry: false,
+            refetchOnWindowFocus: false,
+            onError: () => {
+                setRefetchInterval(0);
+                dispatch(resetSecret());
+                delete localStorage.auth;
+                history.push('/login');
+            },
+        },
+    );
 
     const mobile = useMediaQuery(({ breakpoints }: Theme) => breakpoints.down('sm'));
     const [openDialog, setOpenDialog] = useState(false);

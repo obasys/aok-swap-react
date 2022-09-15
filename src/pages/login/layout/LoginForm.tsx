@@ -1,12 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ButtonBase, Container, Skeleton, Theme, Typography, useMediaQuery } from '@mui/material';
-import logo from '../../../assets/logos/logo-green.svg';
 import QRCode from 'react-qr-code';
-import LoginIcon from '@mui/icons-material/Login';
-import { LoadingButton } from '@mui/lab';
 import { useDispatch } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { useMutation } from '@tanstack/react-query';
@@ -15,6 +11,7 @@ import { addSecret } from '../../../redux/reducers/login';
 import { useHistory } from 'react-router-dom';
 import axios, { AxiosResponse } from 'axios';
 import { io, Socket } from 'socket.io-client';
+
 // import * as bitcoinMessage from 'bitcoinjs-message';
 
 interface Props {
@@ -22,12 +19,8 @@ interface Props {
 }
 
 const API_URL = 'https://bridge.codepillow.io';
-// time for Bridge is on /auth/time/
-const CALLBACK_URL = 'https://callback.aok.network';
+const CALLBACK_URL = 'https://callback.seirenwar.com';
 const PREFIX = '\x14AOK Signed Message:\n';
-
-// const API_URL = 'https://api.seirenwar.com/v1';
-// const CALLBACK_URL = 'https://callback.seirenwar.com';
 
 const uuid4 = () => {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -43,28 +36,18 @@ const LoginForm: FC<Props> = ({ className }) => {
     const { enqueueSnackbar } = useSnackbar();
     const history = useHistory();
 
-    const { mutate, isLoading } = useMutation(login, {
+    const { mutate } = useMutation(login, {
         onSuccess: (data) => {
             history.push('/');
             dispatch(addSecret(data.token));
             localStorage.setItem('auth', data.token);
             enqueueSnackbar('Login success!', { variant: 'success' });
-            console.log(data);
         },
         onError: (e) => {
             alert(e);
         },
     });
 
-    const fakeLogin = () => {
-        mutate({
-            signature: 'signature2',
-            message: 'message2',
-            address: 'aсcount2',
-        });
-    };
-
-    // //
     const socket = useRef<Socket>(null);
     const [session] = useState(uuid4());
     const [message, setMessage] = useState('');
@@ -90,7 +73,6 @@ const LoginForm: FC<Props> = ({ className }) => {
                 },
             }: AxiosResponse<{ data: { time: string; prefix: string } }> = await axios.get(`${API_URL}/auth/time`);
             setMessage(`${prefix}/${time}`);
-            console.log(`${prefix}/${time}`);
         } catch (e) {
             console.error(e);
         }
@@ -101,24 +83,12 @@ const LoginForm: FC<Props> = ({ className }) => {
             setQRCodeData(getNewQRCodeData());
         }
     }, [message]);
-    console.log(socketData);
-    // console.log(bitcoinMessage);
+
     useEffect(() => {
         if (socketData) {
-            console.log(socketData);
             // console.log(bitcoinMessage);
             // if (bitcoinMessage.verify(message!, socketData.address, socketData.signature, PREFIX)) {
-            // mutate({
-            //     address: socketData.address,
-            //     message: message!,
-            //     signature: socketData.signature,
-            // });
             mutate({
-                signature: 'signature2',
-                message: 'message2',
-                address: 'aсcount2',
-            });
-            console.log({
                 address: socketData.address,
                 message: message!,
                 signature: socketData.signature,
@@ -145,11 +115,9 @@ const LoginForm: FC<Props> = ({ className }) => {
             socket.current.off(session, onSocketCallback);
         };
     }, []);
-    // //
 
     return (
         <Container className={className} maxWidth="xs">
-            <img src={logo} alt="logo" height={72} width={72} />
             <Typography variant="h4" pt={6} pl={3} color="primary">
                 Sign Up
             </Typography>
@@ -159,29 +127,14 @@ const LoginForm: FC<Props> = ({ className }) => {
                 <li>Open QR scan</li>
             </ol>
             <div className="qr-code">
-                {/*<QRCode value={'ssoremgo3gpojn3[gb34g3ss'} size={mobile ? 135 : 170} />*/}
                 {QRCodeData ? (
                     <ButtonBase href={QRCodeData} target="_blank">
-                        <QRCode size={174} value={QRCodeData} bgColor="white" />
+                        <QRCode size={mobile ? 135 : 170} value={QRCodeData} bgColor="white" />
                     </ButtonBase>
                 ) : (
-                    <div className="qr-code-skeleton">
-                        <Skeleton width="100%" height="100%" variant="rectangular" />
-                    </div>
+                    <Skeleton width={mobile ? 135 : 170} height={mobile ? 135 : 170} variant="rectangular" />
                 )}
             </div>
-            <LoadingButton
-                loading={isLoading}
-                fullWidth={!mobile}
-                className="link"
-                variant="contained"
-                startIcon={<LoginIcon />}
-                onClick={fakeLogin}
-            >
-                <Typography textTransform="none" variant="body1">
-                    I want to log in or register.
-                </Typography>
-            </LoadingButton>
         </Container>
     );
 };
