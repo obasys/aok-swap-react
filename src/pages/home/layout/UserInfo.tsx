@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
-    Avatar,
     Button,
     Grid,
     MenuItem,
@@ -55,7 +54,6 @@ const UserInfo: FC<Props> = ({ className }) => {
     const [openDialog, setOpenDialog] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
 
-    const fakeUserName = 'Oleh Smith';
     const [currency, setCurrency] = useState('1');
 
     const handleSelectChange = (event: SelectChangeEvent) => {
@@ -77,26 +75,18 @@ const UserInfo: FC<Props> = ({ className }) => {
 
     const component = (
         <Paper className={className} variant="outlined">
-            <Grid container alignItems="center" justifyContent="space-between" columnSpacing={2} pb={mobile ? 4 : 8}>
-                <Grid item container md="auto" xs={8} alignItems="center" direction="row">
-                    <Avatar>OS</Avatar>
-                    <Typography variant="h6" ml={1}>
-                        {fakeUserName}
-                    </Typography>
-                </Grid>
-                <Grid item md="auto" xs={4} flexDirection="row">
-                    <Typography color="textSecondary" noWrap>
-                        {profileData ? profileData.address : ''}
-                    </Typography>
-                </Grid>
-            </Grid>
-            <Grid container alignItems="center" justifyContent="space-between" columnSpacing={2}>
-                <Grid item sm="auto" xs={12} pb={mobile ? 4 : 0}>
+            <Grid
+                container
+                alignItems="center"
+                justifyContent="space-between"
+                justifyItems="center"
+                pb={mobile ? 4 : 8}
+            >
+                <Grid item md="auto" xs={12} alignSelf="center">
                     <Select
                         value={currency || ''}
                         variant="standard"
                         onChange={handleSelectChange}
-                        // displayEmpty
                         disableUnderline
                         IconComponent={ExpandMoreRoundedIcon}
                     >
@@ -107,17 +97,22 @@ const UserInfo: FC<Props> = ({ className }) => {
                         ))}
                     </Select>
                 </Grid>
-                <Grid item md="auto">
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        className="button"
-                        startIcon={<BiUpload />}
-                        onClick={() => setOpenDialog(true)}
-                    >
-                        Withdraw
-                    </Button>
+                <Grid item md="auto" xs={12}>
+                    <Typography color="textSecondary" noWrap>
+                        {profileData ? profileData.address : ''}
+                    </Typography>
                 </Grid>
+            </Grid>
+            <Grid container item alignItems="center" justifyContent="flex-end" columnSpacing={2}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    className="button"
+                    startIcon={<BiUpload />}
+                    onClick={() => setOpenDialog(true)}
+                >
+                    Withdraw
+                </Button>
             </Grid>
             <Withdraw open={openDialog} onClose={() => setOpenDialog(false)} />
         </Paper>

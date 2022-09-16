@@ -23,6 +23,7 @@ export default styled(BalanceSelectItem)`
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    padding: ${({ theme }) => theme.spacing(0.5)};
 
     .select-icon {
         padding-right: ${({ theme }) => theme.spacing(1)};

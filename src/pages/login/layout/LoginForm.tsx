@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { ButtonBase, Container, Skeleton, Theme, Typography, useMediaQuery } from '@mui/material';
+import { Button, ButtonBase, Container, Grid, Skeleton, Theme, Typography, useMediaQuery } from '@mui/material';
 import QRCode from 'react-qr-code';
 import { useDispatch } from 'react-redux';
 import { useSnackbar } from 'notistack';
@@ -135,6 +135,34 @@ const LoginForm: FC<Props> = ({ className }) => {
                     <Skeleton width={mobile ? 135 : 170} height={mobile ? 135 : 170} variant="rectangular" />
                 )}
             </div>
+            <Typography color="textSecondary" variant="body2" align="center" pb={2}>
+                You need an AOK wallet for the desired use of AOK Swap. Please download your wallet through the link and
+                log in:
+            </Typography>
+            <Grid container flexDirection="row" justifyContent="center" spacing={2} className="btn-grid">
+                <Grid item md={6} xs={12}>
+                    <Button
+                        variant="outlined"
+                        className="caution-btn"
+                        fullWidth
+                        onClick={() =>
+                            window.open('https://play.google.com/store/apps/details?id=com.aokey&hl=uk&gl=US', '_blank')
+                        }
+                    >
+                        <Typography variant="body1">Android</Typography>
+                    </Button>
+                </Grid>
+                <Grid item md={6} xs={12}>
+                    <Button
+                        variant="outlined"
+                        className="caution-btn"
+                        fullWidth
+                        onClick={() => window.open('https://apps.apple.com/us/app/aok-wallet/id1514809987', '_blank')}
+                    >
+                        <Typography variant="body1">iOS</Typography>
+                    </Button>
+                </Grid>
+            </Grid>
         </Container>
     );
 };

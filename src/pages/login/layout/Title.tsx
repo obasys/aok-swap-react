@@ -23,6 +23,5 @@ const Title: FC<Props> = ({ className }) => {
 };
 
 export default styled(Title)`
-    padding-top: ${({ theme }) => theme.spacing(11)};
     margin: auto;
 `;

@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { FormControl, Grid, List, MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
+import { Grid, List, MenuItem, Pagination, Select, SelectChangeEvent, Typography } from '@mui/material';
 import styled from 'styled-components';
 import { HistoryItem, HistorySkeleton } from '../components';
 import coinIcon from '../../../assets/ABBC.svg';
@@ -17,6 +17,7 @@ type HistoryItemType = {
 interface Props {
     className?: string;
 }
+
 const history: HistoryItemType[] = [
     {
         type: 'received',
@@ -100,26 +101,25 @@ const History: FC<Props> = ({ className }) => {
                     <Typography variant="h4">History</Typography>
                 </Grid>
                 <Grid item md="auto" xs="auto">
-                    <FormControl size="small">
-                        <Select
-                            value={filter}
-                            onChange={handleChange}
-                            displayEmpty
-                            disableUnderline
-                            variant="standard"
-                            IconComponent={ExpandMoreRoundedIcon}
-                        >
-                            <MenuItem value={10}>
-                                <Typography variant="h6">Deposit</Typography>
-                            </MenuItem>
-                            <MenuItem value={20}>
-                                <Typography variant="h6">Deposit</Typography>
-                            </MenuItem>
-                            <MenuItem value={30}>
-                                <Typography variant="h6">Deposit</Typography>
-                            </MenuItem>
-                        </Select>
-                    </FormControl>
+                    <Select
+                        value={filter}
+                        onChange={handleChange}
+                        displayEmpty
+                        disabled
+                        disableUnderline
+                        variant="standard"
+                        IconComponent={ExpandMoreRoundedIcon}
+                    >
+                        <MenuItem value={10}>
+                            <Typography variant="h6">Deposit</Typography>
+                        </MenuItem>
+                        <MenuItem value={20}>
+                            <Typography variant="h6">Deposit</Typography>
+                        </MenuItem>
+                        <MenuItem value={30}>
+                            <Typography variant="h6">Deposit</Typography>
+                        </MenuItem>
+                    </Select>
                 </Grid>
             </Grid>
             <List>
@@ -127,10 +127,18 @@ const History: FC<Props> = ({ className }) => {
                     <HistoryItem {...item} key={idx} />
                 ))}
             </List>
+            <div className="pagination">
+                <Pagination count={10} variant="outlined" disabled />
+            </div>
         </div>
     );
 
     return isLoading ? <HistorySkeleton rows={5} /> : component;
 };
 
-export default styled(History)``;
+export default styled(History)`
+    .pagination {
+        display: flex;
+        justify-content: center;
+    }
+`;

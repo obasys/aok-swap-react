@@ -13,12 +13,12 @@ const Login: FC<Props> = ({ className }) => {
 
     return (
         <div className={className}>
-            <Grid container>
+            <Grid container justifyContent="center" alignItems="center">
                 {mobile ? (
                     ''
                 ) : (
                     <Grid item sm={5} xs={12} className="green-part">
-                        <Title />
+                        <Title className="title" />
                     </Grid>
                 )}
                 <Grid item sm={7} xs={12}>
@@ -30,8 +30,16 @@ const Login: FC<Props> = ({ className }) => {
 };
 
 export default styled(Login)`
+    height: 100vh;
+
     .green-part {
         background: ${({ theme }) => theme.palette.primary.main} url(${mask}) repeat-y left;
         height: 100vh;
+        display: flex;
+
+        .title {
+            justify-self: center;
+            align-self: center;
+        }
     }
 `;
