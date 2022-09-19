@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
 import { Grid, List, MenuItem, Pagination, Select, SelectChangeEvent, Typography } from '@mui/material';
 import styled from 'styled-components';
 import { HistoryItem, HistorySkeleton } from '../components';
@@ -98,14 +98,20 @@ const history: HistoryType[] = [
         network: 'AOK',
         height: 1057593,
         txid: '9412fe5594c30bbb4088f20dfb04eacc2bb9e1f7643bf0a01c28c54ccef685ae',
-        amount: 0.83,
+        amount: 29292992922929292.83,
     },
 ];
 
 const History: FC<Props> = ({ className }) => {
     const [filter, setFilter] = useState('1');
+    const [page, setPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(5);
 
-    const handleChange = (event: SelectChangeEvent) => {
+    const handleChangePage = (event: ChangeEvent<unknown>, value: number) => {
+        setPage(value);
+    };
+
+    const handleSelectChange = (event: SelectChangeEvent) => {
         setFilter(event.target.value as string);
     };
 
@@ -120,13 +126,14 @@ const History: FC<Props> = ({ className }) => {
                 <Grid item md="auto" xs="auto">
                     <Select
                         value={filter}
-                        onChange={handleChange}
+                        onChange={handleSelectChange}
                         displayEmpty
                         disableUnderline
                         variant="standard"
                         IconComponent={ExpandMoreRoundedIcon}
+                        className="menu-item"
                     >
-                        <MenuItem value={1}>
+                        <MenuItem value={1} className="menu-item">
                             <Typography variant="h6">Deposit</Typography>
                         </MenuItem>
                         <MenuItem value={2}>
@@ -136,12 +143,17 @@ const History: FC<Props> = ({ className }) => {
                 </Grid>
             </Grid>
             <List>
-                {history.slice(0, 5).map((item, idx) => (
+                {history.slice((page - 1) * itemsPerPage, (page - 1) * itemsPerPage + itemsPerPage).map((item, idx) => (
                     <HistoryItem {...item} key={idx} />
                 ))}
             </List>
             <div className="pagination">
-                <Pagination count={10} variant="outlined" disabled />
+                <Pagination
+                    count={Math.ceil(history.length / itemsPerPage)}
+                    page={page}
+                    onChange={handleChangePage}
+                    variant="outlined"
+                />
             </div>
         </div>
     );
@@ -153,5 +165,8 @@ export default styled(History)`
     .pagination {
         display: flex;
         justify-content: center;
+    }
+    .menu-item {
+        margin: 4px;
     }
 `;
