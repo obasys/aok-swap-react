@@ -5,6 +5,7 @@ import Withdraw from './Withdraw';
 import DepositSkeleton from './DepositSkeleton';
 import HistorySkeleton from './HistorySkeleton';
 import UserInfoSkeleton from './UserInfoSkeleton';
+import NoHistory from './NoHistory';
 
 export {
     HistoryItem,
@@ -14,4 +15,5 @@ export {
     DepositSkeleton,
     HistorySkeleton,
     UserInfoSkeleton,
+    NoHistory,
 };

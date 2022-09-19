@@ -2,91 +2,108 @@ import React, { FC, useState } from 'react';
 import { Grid, List, MenuItem, Pagination, Select, SelectChangeEvent, Typography } from '@mui/material';
 import styled from 'styled-components';
 import { HistoryItem, HistorySkeleton } from '../components';
-import coinIcon from '../../../assets/ABBC.svg';
+import { History as HistoryType } from '../../../types/History';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
-
-type HistoryItemType = {
-    hash: string;
-    date: number;
-    coin: string;
-    amount: number;
-    type: 'sent' | 'received';
-    icon?: string;
-};
 
 interface Props {
     className?: string;
 }
 
-const history: HistoryItemType[] = [
+const history: HistoryType[] = [
     {
-        type: 'received',
-        hash: '2hh23h23h2h342j32jh3j23h2h3j2h3h2h34j2hj34h2j3h2',
-        coin: 'BTC',
-        amount: 214.242,
-        date: 1656374400 * 1000,
-        icon: coinIcon,
+        type: 'deposit',
+        timestamp: 1661068989,
+        confirmed: true,
+        network: 'AVALANCHE',
+        height: 12716744,
+        txid: '0x6f8ea78339014dd358f210d077f817913a33e14021e7e275785014cfcd18e589',
+        amount: 0.31,
     },
     {
-        type: 'received',
-        hash: '2hh23h23h2h342j32jh3j23h2h3j2h3h2h34j2hj34h2j3h2',
-        coin: 'BTC',
-        amount: 214.242,
-        date: 1656374400 * 1000,
-        icon: coinIcon,
+        type: 'deposit',
+        timestamp: 1661068989,
+        confirmed: true,
+        network: 'POLYGON',
+        height: 27715008,
+        txid: '0x101f122d3747cf984816b50a7721ebc9f6c617d9b92d2073adf7fa118e45b66d',
+        amount: 0.34,
     },
     {
-        type: 'received',
-        hash: '2hh23h23h2h342j32jh3j23h2h3j2h3h2h34j2hj34h2j3h2',
-        coin: 'BTC',
-        amount: 214.242,
-        date: 1656374400 * 1000,
-        icon: coinIcon,
+        type: 'deposit',
+        timestamp: 1661068989,
+        confirmed: true,
+        network: 'BSC',
+        height: 22142598,
+        txid: '0x8fcd04f8f1954834d556aaea8b33a4452e06240e06cbae9d8e2d22bd4cdb3d42',
+        amount: 0.35,
     },
     {
-        type: 'received',
-        hash: '2hh23h23h2h342j32jh3j23h2h3j2h3h2h34j2hj34h2j3h2',
-        coin: 'BTC',
-        amount: 214.242,
-        date: 1656374400 * 1000,
-        icon: coinIcon,
+        type: 'deposit',
+        timestamp: 1661068990,
+        confirmed: true,
+        network: 'AVALANCHE',
+        height: 12716745,
+        txid: '0x9ce64db8a2c2648fac6224c2ba55725f9924cd9ba3416783edb1804f8727877a',
+        amount: 0.89,
     },
     {
-        type: 'received',
-        hash: '2hh23h23h2h342j32jh3j23h2h3j2h3h2h34j2hj34h2j3h2',
-        coin: 'BTC',
-        amount: 214.242,
-        date: 1656374400 * 1000,
-        icon: coinIcon,
+        type: 'deposit',
+        timestamp: 1661069028,
+        confirmed: true,
+        network: 'AOK',
+        height: 1057593,
+        txid: '9412fe5594c30bbb4088f20dfb04eacc2bb9e1f7643bf0a01c28c54ccef685ae',
+        amount: 0.83,
     },
     {
-        type: 'received',
-        hash: '2hh23h23h2h342j32jh3j23h2h3j2h3h2h34j2hj34h2j3h2',
-        coin: 'BTC',
-        amount: 214.242,
-        date: 1656374400 * 1000,
-        icon: coinIcon,
+        type: 'deposit',
+        timestamp: 1661068989,
+        confirmed: true,
+        network: 'AVALANCHE',
+        height: 12716744,
+        txid: '0x6f8ea78339014dd358f210d077f817913a33e14021e7e275785014cfcd18e589',
+        amount: 0.31,
     },
     {
-        type: 'received',
-        hash: '2hh23h23h2h342j32jh3j23h2h3j2h3h2h34j2hj34h2j3h2',
-        coin: 'BTC',
-        amount: 214.242,
-        date: 1656374400 * 1000,
-        icon: coinIcon,
+        type: 'deposit',
+        timestamp: 1661068989,
+        confirmed: true,
+        network: 'POLYGON',
+        height: 27715008,
+        txid: '0x101f122d3747cf984816b50a7721ebc9f6c617d9b92d2073adf7fa118e45b66d',
+        amount: 0.34,
     },
     {
-        type: 'received',
-        hash: '2hh23h23h2h342j32jh3j23h2h3j2h3h2h34j2hj34h2j3h2',
-        coin: 'BTC',
-        amount: 214.242,
-        date: 1656374400 * 1000,
-        icon: coinIcon,
+        type: 'deposit',
+        timestamp: 1661068989,
+        confirmed: true,
+        network: 'BSC',
+        height: 22142598,
+        txid: '0x8fcd04f8f1954834d556aaea8b33a4452e06240e06cbae9d8e2d22bd4cdb3d42',
+        amount: 0.35,
+    },
+    {
+        type: 'deposit',
+        timestamp: 1661068990,
+        confirmed: true,
+        network: 'AVALANCHE',
+        height: 12716745,
+        txid: '0x9ce64db8a2c2648fac6224c2ba55725f9924cd9ba3416783edb1804f8727877a',
+        amount: 0.89,
+    },
+    {
+        type: 'deposit',
+        timestamp: 1661069028,
+        confirmed: true,
+        network: 'AOK',
+        height: 1057593,
+        txid: '9412fe5594c30bbb4088f20dfb04eacc2bb9e1f7643bf0a01c28c54ccef685ae',
+        amount: 0.83,
     },
 ];
 
 const History: FC<Props> = ({ className }) => {
-    const [filter, setFilter] = useState('10');
+    const [filter, setFilter] = useState('1');
 
     const handleChange = (event: SelectChangeEvent) => {
         setFilter(event.target.value as string);
@@ -105,19 +122,15 @@ const History: FC<Props> = ({ className }) => {
                         value={filter}
                         onChange={handleChange}
                         displayEmpty
-                        disabled
                         disableUnderline
                         variant="standard"
                         IconComponent={ExpandMoreRoundedIcon}
                     >
-                        <MenuItem value={10}>
+                        <MenuItem value={1}>
                             <Typography variant="h6">Deposit</Typography>
                         </MenuItem>
-                        <MenuItem value={20}>
-                            <Typography variant="h6">Deposit</Typography>
-                        </MenuItem>
-                        <MenuItem value={30}>
-                            <Typography variant="h6">Deposit</Typography>
+                        <MenuItem value={2}>
+                            <Typography variant="h6">Withdraw</Typography>
                         </MenuItem>
                     </Select>
                 </Grid>

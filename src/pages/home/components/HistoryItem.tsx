@@ -1,37 +1,44 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { Avatar, ListItemAvatar, ListItemButton, ListItemText, Paper, Typography } from '@mui/material';
+import { Avatar, ListItemAvatar, ListItemButton, ListItemText, Paper, Typography, Link } from '@mui/material';
 import moment from 'moment';
 import { IoArrowDownSharp, IoArrowUpSharp } from 'react-icons/io5';
+import { History } from '../../../types/History';
 
-interface Props {
+interface Props extends History {
     className?: string;
-    hash: string;
-    date: number;
-    coin: string;
-    amount: number;
-    type: 'sent' | 'received';
-    icon?: string;
 }
 
-const HistoryItem: FC<Props> = ({ className, hash, coin, date, amount, type, icon }) => {
+const HistoryItem: FC<Props> = ({ className, amount, type, icon, timestamp, txid, network }) => {
     return (
         <Paper className={className} variant="outlined">
-            <ListItemButton className="list-item">
+            <ListItemButton
+                className="list-item"
+                component={Link}
+                target="_blank"
+                href={`https://aokscan.com/transaction/${txid}`}
+            >
                 <ListItemAvatar>
-                    <Avatar>{type === 'sent' ? <IoArrowUpSharp /> : <IoArrowDownSharp />}</Avatar>
+                    <Avatar>{type === 'withdrawal' ? <IoArrowUpSharp /> : <IoArrowDownSharp />}</Avatar>
                 </ListItemAvatar>
                 <ListItemText
                     primary={
                         <Typography variant="subtitle1" noWrap>
-                            {hash.slice(0, 23) + '...'}
+                            {txid && txid.slice(0, 23) + '...'}
                         </Typography>
                     }
-                    secondary={<Typography variant="subtitle2">{moment(date).startOf('day').fromNow()}</Typography>}
+                    secondary={
+                        <Typography variant="subtitle2">
+                            {timestamp &&
+                                moment(timestamp * 1000)
+                                    .startOf('day')
+                                    .fromNow()}
+                        </Typography>
+                    }
                 />
-                <img src={icon} alt="coin" />
+                {icon && <img src={icon} alt="coin" />}
                 <Typography align="right" ml={1} variant="h6">
-                    {coin} {type === 'sent' ? '+' : '-'}
+                    {network} {type === 'withdrawal' ? '-' : '+'}
                     {amount}
                 </Typography>
             </ListItemButton>

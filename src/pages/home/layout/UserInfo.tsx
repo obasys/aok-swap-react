@@ -15,7 +15,7 @@ import Logo from '../../../assets/logo.svg';
 import { BiUpload } from 'react-icons/all';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import { BalanceSelectItem, UserInfoSkeleton, Withdraw } from '../components';
-import useProfile from '../../../api/UseProfile';
+import useProfile from '../../../api/useProfile';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { resetSecret } from '../../../redux/reducers/login';
