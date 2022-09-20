@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Box, Typography } from '@mui/material';
-import aok from '../../../assets/logos/logo-green.svg';
+import { Box, Paper, Typography } from '@mui/material';
+import noHistory from '../../../assets/no-history.svg';
 
 interface NoHistoryProps {
     className?: string;
@@ -9,15 +9,20 @@ interface NoHistoryProps {
 
 const NoHistory = ({ className }: NoHistoryProps) => {
     return (
-        <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" className={className}>
-            <img src={aok} alt="aok" className="no-history-img" />
+        <Paper className={className} variant="outlined">
+            <img src={noHistory} alt="aok" className="no-history-img" />
+            <Typography variant="h5">Empty Transaction History</Typography>
             <Typography color="primary">{'It\x27s time to start the story!'}</Typography>
-        </Box>
+        </Paper>
     );
 };
 
 export default styled(NoHistory)`
-    padding: ${({ theme }) => theme.spacing(4)};
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 
     .no-history-img {
         opacity: 35%;

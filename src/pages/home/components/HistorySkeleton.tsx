@@ -1,16 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import {
-    Avatar,
-    Grid,
-    List,
-    ListItemAvatar,
-    ListItemButton,
-    ListItemText,
-    Paper,
-    Skeleton,
-    Typography,
-} from '@mui/material';
+import { Avatar, Grid, List, ListItemAvatar, ListItem, ListItemText, Paper, Skeleton, Typography } from '@mui/material';
 
 interface Props {
     className?: string;
@@ -20,7 +10,7 @@ interface Props {
 const HistorySkeleton: FC<Props> = ({ className, rows }) => {
     const historyItem = (key: number) => (
         <Paper className="history-item" variant="outlined" key={key}>
-            <ListItemButton>
+            <ListItem>
                 <ListItemAvatar>
                     <Skeleton variant="circular">
                         <Avatar />
@@ -41,7 +31,7 @@ const HistorySkeleton: FC<Props> = ({ className, rows }) => {
                 <Typography align="right" ml={1} variant="h6">
                     <Skeleton width={150} />
                 </Typography>
-            </ListItemButton>
+            </ListItem>
         </Paper>
     );
 

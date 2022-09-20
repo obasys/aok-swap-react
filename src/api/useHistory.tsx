@@ -13,7 +13,7 @@ async function fetch(params: Params) {
             headers: { Auth: params.auth },
             params: { type: params.type },
         });
-        return data;
+        return data.transactions;
     } catch (e) {
         console.error(e);
         throw e;
@@ -21,5 +21,5 @@ async function fetch(params: Params) {
 }
 
 export default function (params: Params, options?: Record<string, any>) {
-    return useQuery<Balance, Error>(['history', params], () => fetch(params), options);
+    return useQuery<History[], Error>(['history', params], () => fetch(params), options);
 }
