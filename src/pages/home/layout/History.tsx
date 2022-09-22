@@ -19,6 +19,7 @@ const History: FC<Props> = ({ className }) => {
     const token = useSelector((state: any) => state.login.token);
 
     const { error, data: history, isLoading } = useHistory({ auth: token, type: filter });
+    console.log(history);
 
     const handleChangePage = (event: ChangeEvent<unknown>, value: number) => {
         setPage(value);

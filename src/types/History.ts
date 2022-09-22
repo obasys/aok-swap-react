@@ -5,6 +5,6 @@ export type History = {
     amount?: number;
     type?: 'deposit' | 'withdrawal';
     icon?: string;
-    confirmed?: boolean;
+    confirmed?: string;
     height?: number;
 };

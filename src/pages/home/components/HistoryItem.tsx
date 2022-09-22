@@ -10,6 +10,7 @@ import {
     Link,
     useMediaQuery,
     Theme,
+    Skeleton,
 } from '@mui/material';
 import moment from 'moment';
 import { IoArrowDownSharp, IoArrowUpSharp } from 'react-icons/io5';
@@ -19,7 +20,7 @@ interface Props extends History {
     className?: string;
 }
 
-const HistoryItem: FC<Props> = ({ className, amount, type, icon, timestamp, txid, network }) => {
+const HistoryItem: FC<Props> = ({ className, amount, type, icon, timestamp, txid, network, confirmed }) => {
     const mobile = useMediaQuery(({ breakpoints }: Theme) => breakpoints.down('sm'));
 
     return (
@@ -35,8 +36,16 @@ const HistoryItem: FC<Props> = ({ className, amount, type, icon, timestamp, txid
                 </ListItemAvatar>
                 <ListItemText
                     primary={
-                        <Typography variant="subtitle1" noWrap>
-                            {txid && (mobile ? txid.slice(0, 16) : txid.slice(0, 40)) + '...'}
+                        <Typography
+                            variant="subtitle1"
+                            noWrap
+                            color={confirmed && (confirmed === 'true' ? 'textPrimary' : 'textSecondary')}
+                        >
+                            {txid ? (
+                                (mobile ? txid.slice(0, 16) : txid.slice(0, 40)) + '...'
+                            ) : (
+                                <Skeleton animation="wave" width={100} />
+                            )}
                         </Typography>
                     }
                     secondary={
@@ -49,7 +58,12 @@ const HistoryItem: FC<Props> = ({ className, amount, type, icon, timestamp, txid
                     }
                 />
                 {icon && <img src={icon} alt="coin" />}
-                <Typography align="right" ml={1} variant={mobile ? 'body1' : 'h6'}>
+                <Typography
+                    align="right"
+                    ml={1}
+                    variant={mobile ? 'body1' : 'h6'}
+                    color={confirmed && (confirmed === 'true' ? 'textPrimary' : 'textSecondary')}
+                >
                     {network} {type === 'withdrawal' ? '-' : '+'}
                     {amount}
                 </Typography>
