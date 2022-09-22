@@ -12,7 +12,9 @@ import {
 } from '@mui/material';
 import styled from 'styled-components';
 import { MdOutlineClose } from 'react-icons/md';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { resetSecret } from '../redux/reducers/login';
 
 interface Props {
     className?: string;
@@ -21,7 +23,16 @@ interface Props {
 }
 
 const MobileDrawer: FC<Props> = ({ className, isDrawerOpened, setIsDrawerOpened }) => {
+    const history = useHistory();
+    const dispatch = useDispatch();
+
     const onClose = () => setIsDrawerOpened(false);
+
+    const logOut = () => {
+        dispatch(resetSecret());
+        delete localStorage.auth;
+        history.push('/login');
+    };
 
     return (
         <Drawer
@@ -70,7 +81,7 @@ const MobileDrawer: FC<Props> = ({ className, isDrawerOpened, setIsDrawerOpened 
                     </ListItemButton>
                 </ListItem>
                 <ListItem className="link">
-                    <ListItemButton>
+                    <ListItemButton onClick={logOut}>
                         <ListItemText
                             className="link-text"
                             primary={

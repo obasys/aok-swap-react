@@ -1,6 +1,16 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { Avatar, ListItemAvatar, ListItemButton, ListItemText, Paper, Typography, Link } from '@mui/material';
+import {
+    Avatar,
+    ListItemAvatar,
+    ListItemButton,
+    ListItemText,
+    Paper,
+    Typography,
+    Link,
+    useMediaQuery,
+    Theme,
+} from '@mui/material';
 import moment from 'moment';
 import { IoArrowDownSharp, IoArrowUpSharp } from 'react-icons/io5';
 import { History } from '../../../types/History';
@@ -10,6 +20,8 @@ interface Props extends History {
 }
 
 const HistoryItem: FC<Props> = ({ className, amount, type, icon, timestamp, txid, network }) => {
+    const mobile = useMediaQuery(({ breakpoints }: Theme) => breakpoints.down('sm'));
+
     return (
         <Paper className={className} variant="outlined">
             <ListItemButton
@@ -24,11 +36,11 @@ const HistoryItem: FC<Props> = ({ className, amount, type, icon, timestamp, txid
                 <ListItemText
                     primary={
                         <Typography variant="subtitle1" noWrap>
-                            {txid && txid.slice(0, 23) + '...'}
+                            {txid && (mobile ? txid.slice(0, 16) : txid.slice(0, 40)) + '...'}
                         </Typography>
                     }
                     secondary={
-                        <Typography variant="subtitle2">
+                        <Typography variant="subtitle2" color="textSecondary">
                             {timestamp &&
                                 moment(timestamp * 1000)
                                     .startOf('day')
@@ -37,7 +49,7 @@ const HistoryItem: FC<Props> = ({ className, amount, type, icon, timestamp, txid
                     }
                 />
                 {icon && <img src={icon} alt="coin" />}
-                <Typography align="right" ml={1} variant="h6">
+                <Typography align="right" ml={1} variant={mobile ? 'body1' : 'h6'}>
                     {network} {type === 'withdrawal' ? '-' : '+'}
                     {amount}
                 </Typography>
