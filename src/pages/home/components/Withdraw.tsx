@@ -51,14 +51,14 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
         formState: { errors: fieldsErrors },
     } = useForm<WithdrawType>();
 
-    // const [currency, setCurrency] = useState('1');
     const [currency, setCurrency] = useState<Address>();
 
     const { enqueueSnackbar } = useSnackbar();
     const watchAmount = watch('amount');
 
     const { mutate, isLoading } = useMutation(withdraw, {
-        onSuccess: () => {
+        onSuccess: (data) => {
+            console.log(data);
             reset();
             enqueueSnackbar('Withdraw success!', { variant: 'success' });
         },
@@ -74,7 +74,7 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
     };
 
     const handleSelectChange = (event: SelectChangeEvent) => {
-        setCurrency(addresses?.find((x) => x.id === event.target.value));
+        setCurrency(addresses?.find((x) => x.ticker === event.target.value));
     };
 
     useEffect(() => {
@@ -106,7 +106,7 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
                                 {...field}
                                 {...register('network')}
                                 className="form-field"
-                                value={currency?.id}
+                                value={currency?.ticker}
                                 onChange={handleSelectChange}
                                 defaultValue="1"
                                 fullWidth
@@ -115,7 +115,7 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
                                 {!isAddressesLoading &&
                                     addresses &&
                                     addresses.map((item) => (
-                                        <MenuItem value={item.id} key={item.id}>
+                                        <MenuItem value={item.ticker} key={item.id}>
                                             <CurrencySelectItem {...item} />
                                         </MenuItem>
                                     ))}
@@ -124,7 +124,6 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
                         control={control}
                         rules={{
                             required: 'Currency required',
-                            // validate: isAddress,
                         }}
                     />
                     <Controller
@@ -172,7 +171,7 @@ const Withdraw: FC<Props> = ({ className, open, onClose }) => {
                                         <>
                                             <InputAdornment position="end">{currency?.ticker}</InputAdornment>
                                             <InputAdornment position="end">
-                                                <Button sx={{ minWidth: 0 }} size="small">
+                                                <Button sx={{ minWidth: 0 }} size="small" disabled>
                                                     Max
                                                 </Button>
                                             </InputAdornment>

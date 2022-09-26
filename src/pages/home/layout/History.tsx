@@ -61,10 +61,14 @@ const History: FC<Props> = ({ className }) => {
                         className="menu-item"
                     >
                         <MenuItem value="deposit" className="menu-item">
-                            <Typography variant="h6">Deposit</Typography>
+                            <Typography variant="h6" pl={0.5}>
+                                Deposit
+                            </Typography>
                         </MenuItem>
                         <MenuItem value="withdrawal">
-                            <Typography variant="h6">Withdraw</Typography>
+                            <Typography variant="h6" pl={0.5}>
+                                Withdraw
+                            </Typography>
                         </MenuItem>
                     </Select>
                 </Grid>
